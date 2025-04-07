@@ -51,8 +51,8 @@ export members="NA"
 ################################################################
 export vhr=${vhr:-00}
 export cycle=${cycle:-t${vhr}z}
-setpdy.sh $DAYS
-. ./PDY
+/lfs/h2/emc/vpppg/noscrub/shannon.shields/setpdyplots.sh
+. ./PDYplots
 
 export VDATE_START=${VDATE_START:-$(eval echo \$PDYm$DAYS)}
 export VDATE_END=${VDATE_END:-$PDYm2}

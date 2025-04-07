@@ -56,8 +56,8 @@ fi
 ################################################################
 export vhr=${vhr:-00}
 export cycle=${cycle:-t${vhr}z}
-setpdy.sh 40
-. ./PDY
+/lfs/h2/emc/vpppg/noscrub/shannon.shields/setpdystats.sh
+. ./PDYstats
 
 export VDATE=${VDATE:-$PDYm2}
 
