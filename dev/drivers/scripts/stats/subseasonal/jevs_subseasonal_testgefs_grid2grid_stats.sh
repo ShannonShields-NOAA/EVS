@@ -1,10 +1,10 @@
-#PBS -N jevs_subseasonal_gefs_grid2obs_stats
+#PBS -N jevs_subseasonal_testgefs_grid2grid_stats
 #PBS -j oe
 #PBS -S /bin/bash
 #PBS -q "dev"
 #PBS -A VERF-DEV
-#PBS -l walltime=00:40:00
-#PBS -l place=vscatter,select=1:ncpus=8:ompthreads=1:mem=60GB
+#PBS -l walltime=01:00:00
+#PBS -l place=vscatter,select=1:ncpus=66:ompthreads=1:mem=70GB
 #PBS -l debug=true
 
 set -x
@@ -15,7 +15,7 @@ cd $PBS_O_WORKDIR
 
 export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 
-export job=${PBS_JOBNAME:-jevs_subseasonal_gefs_grid2obs_stats}
+export job=${PBS_JOBNAME:-jevs_subseasonal_testgefs_grid2grid_stats}
 export jobid=$job.${PBS_JOBID:-$$}
 
 source $HOMEevs/versions/run.ver
@@ -35,20 +35,20 @@ export QUEUE=dev
 export QUEUESHARED=dev_shared
 export QUEUESERV=dev_transfer
 export PARTITION_BATCH=
-export nproc=8
+export nproc=66
 export USE_CFP=YES
 export vhr=00
 export NET=evs
 export STEP=stats
 export COMPONENT=subseasonal
 export RUN=atmos
-export MODELNAME=gefs
-export VERIF_CASE=grid2obs
+export MODELNAME=cfs
+export VERIF_CASE=grid2grid
 
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver_2d}/$STEP/$COMPONENT
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/${evs_ver_2d}/prep/$COMPONENT/$RUN
 
-export config=$HOMEevs/parm/evs_config/subseasonal/config.evs.subseasonal.gefs.grid2obs.stats
+export config=$HOMEevs/parm/evs_config/subseasonal/config.evs.subseasonal.testgefs.grid2grid.stats
 
 # Call executable job script
 $HOMEevs/jobs/JEVS_SUBSEASONAL_STATS
@@ -56,6 +56,6 @@ $HOMEevs/jobs/JEVS_SUBSEASONAL_STATS
 
 ######################################################################
 # Purpose: The job and task scripts work together to generate the
-#          subseasonal verification grid-to-obs statistics for the GEFS model 
+#          subseasonal verification grid-to-grid statistics for the CFS model 
 #          and create the stat files in the databases.
 ######################################################################
