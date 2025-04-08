@@ -1211,7 +1211,7 @@ class PlotSpecs:
             'model1': {'color': '#000000',
                        'marker': 'o', 'markersize': 6,
                        'linestyle': 'solid', 'linewidth': 3},
-            'model2': {'color': '#56b4e9',
+            'model2': {'color': '#fb2020',
                        'marker': 'o', 'markersize': 6,
                        'linestyle': 'solid', 'linewidth': 3},
             'model3': {'color': '#1e3cff',
