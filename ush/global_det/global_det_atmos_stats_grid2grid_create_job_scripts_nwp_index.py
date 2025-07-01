@@ -37,6 +37,7 @@ METPLUS_PATH = os.environ['METPLUS_PATH']
 MET_ROOT = os.environ['MET_ROOT']
 PARMevs = os.environ['PARMevs']
 model_list = os.environ['model_list'].split(' ')
+ref_model = os.environ['REFERENCENAME']
 model_evs_data_dir_list = os.environ['model_evs_data_dir_list'].split(' ')
 
 VERIF_CASE_STEP = VERIF_CASE+'_'+STEP
@@ -105,17 +106,17 @@ if JOB_GROUP in ['generate_stats', 'calc_nwp_index']:
                     full_job_levels_dict[verif_type_job_env_var] = (
                         job_env_dict[verif_type_job_env_var]
                     )
-            full_job_fhr_list = job_env_dict['fhr_list']
+            #full_job_fhr_list = job_env_dict['fhr_list']
             verif_type_job_commands_list = (
                 JOB_GROUP_jobs_dict[verif_type]\
                 [verif_type_job]['commands']
             )
             # Loop through and write job script for dates and models
-            if JOB_GROUP == 'reformat_data':
-                if verif_type in ['sst', 'sea_ice']:
+            if JOB_GROUP == 'calc_nwp_index':
+                if verif_type == 'nwp':
                     job_env_dict['valid_hr_start'] = '00'
-                    job_env_dict['valid_hr_end'] = '12'
-                    job_env_dict['valid_hr_inc'] = '12'
+                    job_env_dict['valid_hr_end'] = '18'
+                    job_env_dict['valid_hr_inc'] = '6'
                 if verif_type == 'pres_levs' \
                         and verif_type_job == 'GeoHeightAnom':
                     if int(job_env_dict['valid_hr_start']) - 12 > 0:
@@ -138,12 +139,13 @@ if JOB_GROUP in ['generate_stats', 'calc_nwp_index']:
                 job_env_dict['valid_hr_start'] = date_dt.strftime('%H')
                 job_env_dict['valid_hr_end'] = date_dt.strftime('%H')
                 for model_idx in range(len(model_list)):
-                    job_env_dict['fhr_list'] = full_job_fhr_list
+                    #job_env_dict['fhr_list'] = full_job_fhr_list
                     for full_level_key in list(full_job_levels_dict.keys()):
                         job_env_dict[full_level_key] = (
                             full_job_levels_dict[full_level_key]
                         )
                     job_env_dict['MODEL'] = model_list[model_idx]
+                    job_env_dict['REFERENCE'] = ref_model
                     njobs+=1
                     job_env_dict['job_num'] = str(njobs)
                     # Create job file
@@ -211,9 +213,9 @@ if JOB_GROUP in ['generate_stats', 'calc_nwp_index']:
                                     )
                     # Do file checks
                     all_truth_file_exist = False
-                    model_files_exist = False
-                    write_job_cmds = False
-                    check_model_files = True
+                    model_files_exist = True
+                    write_job_cmds = True
+                    check_model_files = False
                     if check_model_files:
                         (model_files_exist, valid_date_fhr_list,
                          copy_output_list) = (
@@ -222,26 +224,8 @@ if JOB_GROUP in ['generate_stats', 'calc_nwp_index']:
                         job_env_dict['fhr_list'] = (
                             ', '.join(valid_date_fhr_list)
                         )
-                    if JOB_GROUP == 'reformat_data':
-                        if verif_type == 'pres_levs' \
-                                and verif_type_job in ['GeoHeightAnom',
-                                                       'WindShear']:
-                            check_truth_files = True
-                        else:
-                            check_truth_files = False
-                    elif JOB_GROUP == 'assemble_data':
+                    if JOB_GROUP == 'calc_nwp_index':
                         check_truth_files = False
-                    elif JOB_GROUP == 'generate_stats':
-                        if verif_type == 'pres_levs' \
-                                and verif_type_job in [
-                                    'DailyAvg_GeoHeightAnom',
-                                    'WindShear'
-                                ]:
-                            check_truth_files = False
-                        elif verif_type == 'means':
-                            check_truth_files = False
-                        else:
-                            check_truth_files = True
                     if check_truth_files:
                         all_truth_file_exist = (
                              gda_util.check_truth_files(job_env_dict)

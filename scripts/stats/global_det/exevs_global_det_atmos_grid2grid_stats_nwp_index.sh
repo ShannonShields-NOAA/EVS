@@ -48,4 +48,6 @@ for group in calc_nwp_index; do
     export err=$?; err_chk
     chmod u+x ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
     . ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
+    python $USHevs/global_det/global_det_atmos_copy_job_dir_output_nwp_index.py
+    export err=$?; err_chk
 done
