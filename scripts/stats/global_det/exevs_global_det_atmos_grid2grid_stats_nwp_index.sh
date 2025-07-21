@@ -48,6 +48,19 @@ for group in calc_nwp_index; do
     export err=$?; err_chk
     chmod u+x ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
     . ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
-    python $USHevs/global_det/global_det_atmos_copy_job_dir_output_nwp_index.py
     export err=$?; err_chk
 done
+
+# Copy stat files to desired location
+if [ $SENDCOM = YES ]; then
+    for MODEL in $model_list; do
+        for MODEL_DATE_PATH in $DATA/$VERIF_CASE_STEP/METplus_output/$MODEL.*; do
+            MODEL_DATE_SUBDIR=$(echo ${MODEL_DATE_PATH##*/})
+            for FILE in $DATA/$VERIF_CASE_STEP/METplus_output/$MODEL_DATE_SUBDIR/*; do
+                if [ -s $FILE ]; then
+                    cp -v $FILE $COMOUT/$MODEL_DATE_SUBDIR/.                 
+		fi
+            done
+	done
+    done
+fi
