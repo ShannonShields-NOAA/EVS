@@ -127,7 +127,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                     dest_model_ref_date_stat_file = os.path.join(
-                        VERIF_CASE_STEP_data_dir, ref_model,
+                        VERIF_CASE_STEP_data_dir, model,
                         ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                 if not os.path.exists(dest_model_date_stat_file):
