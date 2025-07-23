@@ -53,14 +53,8 @@ done
 
 # Copy stat files to desired location
 if [ $SENDCOM = YES ]; then
-    for MODEL in $model_list; do
-        for MODEL_DATE_PATH in $DATA/$VERIF_CASE_STEP/METplus_output/$MODEL.*; do
-            MODEL_DATE_SUBDIR=$(echo ${MODEL_DATE_PATH##*/})
-            for FILE in $DATA/$VERIF_CASE_STEP/METplus_output/$MODEL_DATE_SUBDIR/*; do
-                if [ -s $FILE ]; then
-                    cp -v $FILE $COMOUT/$MODEL_DATE_SUBDIR/.                 
-		fi
-            done
-	done
-    done
+    stat_file=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/evs.stats.$MODEL.$RUN.$VERIF_CASE.nwpindex.v$VDATE.stat
+    if [ -s $stat_file ]; then
+        cp -v $stat_file $COMOUT/$MODEL.$VDATE/.
+    fi
 fi
