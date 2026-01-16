@@ -30,6 +30,7 @@ VERIF_CASE_STEP_abbrev = os.environ['VERIF_CASE_STEP_abbrev']
 VERIF_CASE_STEP_type_list = (os.environ[VERIF_CASE_STEP_abbrev+'_type_list'] \
                              .split(' '))
 USER = os.environ['USER']
+evs_ver_2d = os.environ['evs_ver_2d']
 evs_run_mode = os.environ['evs_run_mode']
 if evs_run_mode != 'production':
     QUEUESERV = os.environ['QUEUESERV']
@@ -99,11 +100,13 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                 if date_type == 'VALID':
                     if evs_run_mode == 'production':
                         model_evs_data_dir = os.path.join(
-                            COMIN, STEP, COMPONENT, 
+                            COMIN, 'EVS_gfsv17', NET, evs_ver_2d,
+                            STEP, COMPONENT, 
                             model+'.'+date_dt.strftime('%Y%m%d')
                         )
                         model_ref_evs_data_dir = os.path.join(
-                            COMIN, STEP, COMPONENT,
+                            COMIN, 'EVS_gfsv16', NET, evs_ver_2d,
+                            STEP, COMPONENT,
                             ref_model+'.'+date_dt.strftime('%Y%m%d')
                         )
                         source_model_date_stat_file = os.path.join(
@@ -124,11 +127,11 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         )
                     dest_model_date_stat_file = os.path.join(
                         VERIF_CASE_STEP_data_dir, model,
-                        model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        'gfsv17_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                     dest_model_ref_date_stat_file = os.path.join(
                         VERIF_CASE_STEP_data_dir, model,
-                        ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        'gfsv16_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                 if not os.path.exists(dest_model_date_stat_file):
                     if gda_util.check_file_exists_size(

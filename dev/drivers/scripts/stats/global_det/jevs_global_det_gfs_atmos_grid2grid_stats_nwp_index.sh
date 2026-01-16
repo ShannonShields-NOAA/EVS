@@ -3,7 +3,7 @@
 #PBS -S /bin/bash
 #PBS -q dev
 #PBS -A VERF-DEV
-#PBS -l walltime=00:05:00
+#PBS -l walltime=00:10:00
 #PBS -l place=shared,select=1:ncpus=1:mem=5GB
 #PBS -l debug=true
 
@@ -40,12 +40,12 @@ export COMPONENT=global_det
 export RUN=atmos
 export VERIF_CASE=grid2grid
 export MODELNAME=gfs
-export REFERENCENAME=cfs
-export VDATE=20250421
+export REFERENCENAME=gfs
+export VDATE=20240310
 
 export DATAROOT=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
 export TMPDIR=$DATAROOT
-export COMIN=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/$NET/$evs_ver_2d
+export COMIN=/lfs/h2/emc/vpppg/noscrub/qi.shi/EVS_stand_alone
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/$COMPONENT
 
 export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}.nwp_index
