@@ -54,7 +54,7 @@ if [ $RUN_GRID2GRID_NWP_INDEX = YES ]; then
     #    g2gs_nwp_fhr_max: forecast hour to end verification: HH[H]
     #    g2gs_nwp_fhr_inc: frequency to verify forecast hours: HH[H]
     export g2gs_type_list="nwp"
-    export g2gs_nwp_valid_hr_list="00 06 12 18"
+    export g2gs_nwp_valid_hr_list="00 12"
     export g2gs_nwp_fhr_min=24
     export g2gs_nwp_fhr_max=120
     export g2gs_nwp_fhr_inc=24
