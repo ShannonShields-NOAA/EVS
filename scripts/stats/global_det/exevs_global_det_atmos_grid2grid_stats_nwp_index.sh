@@ -53,7 +53,7 @@ done
 
 # Copy stat files to desired location
 if [ $SENDCOM = YES ]; then
-    stat_file=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/evs.stats.$MODEL.$RUN.$VERIF_CASE.nwpindex.v$VDATE.stat
+    stat_file=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/evs.stats.gfsv17vsgfsv16.$RUN.$VERIF_CASE.nwpindex.v$VDATE.stat
     if [ -s $stat_file ]; then
         cp -v $stat_file $COMOUT/$MODEL.$VDATE/.
     fi

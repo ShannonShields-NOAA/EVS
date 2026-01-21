@@ -70,7 +70,7 @@ calc_nwp_index_jobs_dict = {'env': {},
 # Create job scripts
 if JOB_GROUP == 'calc_nwp_index':
     print(f"----> Making job scripts for {VERIF_CASE_STEP} "
-          +"for job group {JOB_GROUP}")
+          +f"for job group {JOB_GROUP}")
     # Initialize job environment dictionary
     job_env_dict = gda_util.initalize_job_env_dict(
         JOB_GROUP, JOB_GROUP,

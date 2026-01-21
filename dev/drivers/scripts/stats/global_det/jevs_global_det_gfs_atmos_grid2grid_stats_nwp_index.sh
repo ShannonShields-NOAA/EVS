@@ -48,7 +48,7 @@ export TMPDIR=$DATAROOT
 export COMIN=/lfs/h2/emc/vpppg/noscrub/qi.shi/EVS_stand_alone
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/$COMPONENT
 
-export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}.nwp_index
+export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.gfs.nwp_index
 
 # CALL executable job script here
 $HOMEevs/jobs/JEVS_GLOBAL_DET_NWP_INDEX
