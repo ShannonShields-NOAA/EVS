@@ -39,7 +39,7 @@ export STEP=stats
 export COMPONENT=global_det
 export RUN=atmos
 export VERIF_CASE=grid2grid
-export MODELNAME=gfs
+export MODELNAME=gfsv17
 export REFERENCENAME=gfs
 export VDATE=20240310
 

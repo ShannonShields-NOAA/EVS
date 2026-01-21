@@ -102,7 +102,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         model_evs_data_dir = os.path.join(
                             COMIN, 'EVS_gfsv17', NET, evs_ver_2d,
                             STEP, COMPONENT, 
-                            model+'.'+date_dt.strftime('%Y%m%d')
+                            'gfs.'+date_dt.strftime('%Y%m%d')
                         )
                         model_ref_evs_data_dir = os.path.join(
                             COMIN, 'EVS_gfsv16', NET, evs_ver_2d,
@@ -111,7 +111,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         )
                         source_model_date_stat_file = os.path.join(
                             model_evs_data_dir,
-                            'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                            'evs.stats.gfs.'+RUN+'.'+VERIF_CASE+'.'
                             +'v'+date_dt.strftime('%Y%m%d')+'.stat'
                         )
                         source_model_ref_date_stat_file = os.path.join(
@@ -141,6 +141,16 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                               +dest_model_date_stat_file)
                         os.symlink(source_model_date_stat_file,
                                    dest_model_date_stat_file)
+                        org_file = dest_model_date_stat_file
+                        rev_file = os.path.join(
+                            VERIF_CASE_STEP_data_dir, model,
+                            'revised_gfsv17_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        )
+                        # This replicates sed command
+                        with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
+                            for line in f_in:
+                                f_out.write(line.replace('gfs', 'gfsv17'))
+                        print("Done! "+rev_file+" has been created.")
                 if not os.path.exists(dest_model_ref_date_stat_file):
                     if gda_util.check_file_exists_size(
                             source_model_ref_date_stat_file
