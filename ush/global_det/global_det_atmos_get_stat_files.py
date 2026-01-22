@@ -131,7 +131,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                     )
                     dest_model_ref_date_stat_file = os.path.join(
                         VERIF_CASE_STEP_data_dir, model,
-                        'gfsv16_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        'gfs_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                 if not os.path.exists(dest_model_date_stat_file):
                     if gda_util.check_file_exists_size(
