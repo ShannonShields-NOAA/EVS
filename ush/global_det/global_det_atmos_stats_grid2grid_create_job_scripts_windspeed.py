@@ -67,21 +67,6 @@ reformat_data_jobs_dict = {
     'precip_accum24hr': {},
     'precip_accum3hr': {},
     'pres_levs': {
-        'GeoHeightAnom': {'env': {'var1_name': 'HGT',
-                                  'var1_levels': 'P500',
-                                  'grid': 'G004',
-                                  'met_config_overrides': (
-                                      'climo_mean = fcst;'
-                                  )},
-                          'commands': [gda_util.metplus_command(
-                                           'GridStat_fcstGLOBAL_DET_'
-                                           +'obsModelAnalysis_climoERA5_'
-                                           +'NetCDF.conf'
-                                       ),
-                                       gda_util.python_command(
-                                           'global_det_atmos_stats_grid2grid'
-                                           '_create_anomaly.py', []
-                                       )]},
         'WindSpeed': {'env': {'var1_name': 'UGRD',
                               'var1_levels': 'P850, P250',
                               'var2_name': 'VGRD',
@@ -95,20 +80,6 @@ reformat_data_jobs_dict = {
                                    gda_util.python_command(
                                        'global_det_atmos_stats_grid2grid_'
                                        +'create_wind_speed.py', []
-                                   )]},
-        'WindShear': {'env': {'var1_name': 'UGRD',
-                              'var1_levels': 'P850, P200',
-                              'var2_name': 'VGRD',
-                              'var2_levels': 'P850, P200',
-                              'grid': 'G004',
-                              'met_config_overrides': ''},
-                      'commands': [gda_util.metplus_command(
-                                       'GridStat_fcstGLOBAL_DET_'
-                                       +'obsModelAnalysis_WindsNetCDF.conf'
-                                   ),
-                                   gda_util.python_command(
-                                       'global_det_atmos_stats_grid2grid_'
-                                       +'create_wind_shear.py', []
                                    )]}
     },
     'sea_ice': {
@@ -162,16 +133,7 @@ assemble_data_jobs_dict = {
                                        'PCPCombine_fcstGLOBAL_DET_precip.conf'
                                    )]}
     },
-    'pres_levs': {
-        'DailyAvg_GeoHeightAnom': {'env': {'var1_name': 'HGT_ANOM',
-                                           'var1_levels': 'P500',},
-                                   'commands': [gda_util.python_command(
-                                                    'global_det_atmos_'
-                                                    +'stats_grid2grid'
-                                                    +'_create_daily_avg.py',
-                                                    []
-                                                )]},
-    },
+    'pres_levs': {},
     'sea_ice': {
         'DailyAvg_ConcentrationNH': {'env': {'hemisphere': 'nh',
                                              'grid': 'G219',
@@ -478,89 +440,6 @@ generate_stats_jobs_dict = {
                                         )]}
     },
     'pres_levs': {
-        'GeoHeight': {'env': {'var1_name': 'HGT',
-                              'var1_levels': 'P1000, P700, P500, P250',
-                              'var1_options': '',
-                              'met_config_overrides': 'climo_mean = fcst;'},
-                      'commands': [gda_util.metplus_command(
-                                       'GridStat_fcstGLOBAL_DET_'
-                                       +'obsModelAnalysis_climoERA5.conf'
-                                   )]},
-        'GeoHeight_FourierDecomp': {'env': {'var1_name': 'HGT',
-                                            'var1_levels': 'P500',
-                                            'met_config_overrides': ('climo_'
-                                                                     +'mean = '
-                                                                     +'fcst;')},
-                                    'commands': [gda_util.metplus_command(
-                                                     'GridStat_fcstGLOBAL_DET_'
-                                                     +'obsModelAnalysis_'
-                                                     +'climoERA5_FourierDecomp'
-                                                     +'.conf'
-                                                 )]},
-        'DailyAvg_GeoHeightAnom': {'env': {'var1_name': 'HGT',
-                                           'var1_levels': 'P500',
-                                           'met_config_overrides': (
-                                               'climo_mean = fcst;'
-                                           )},
-                                   'commands': [gda_util.metplus_command(
-                                                    'GridStat_fcstGLOBAL_DET_'
-                                                    +'obsModelAnalysis_DailyAvgAnom'
-                                                    +'.conf'
-                                                )]},
-        'Ozone': {'env': {'var1_name': 'O3MR',
-                          'var1_levels': ('P925, P100, P70, P50, P30, P20, '
-                                          +'P10, P5, P1'),
-                          'var1_options': ('set_attr_units = '
-                                           +'"ppm"; convert(x)=x*1000000'),
-                          'met_config_overrides': 'climo_mean = fcst;'},
-                  'commands': [gda_util.metplus_command(
-                                   'GridStat_fcstGLOBAL_DET_'
-                                   +'obsModelAnalysis_climoERA5.conf'
-                               )]},
-        'PresSeaLevel': {'env': {'var1_name': 'PRMSL',
-                                 'var1_levels': 'Z0',
-                                 'var1_options': ('set_attr_units = '
-                                                  +'"hPa"; convert(p)='
-                                                  +'PA_to_HPA(p)'),
-                                 'met_config_overrides': 'climo_mean = fcst;'},
-                         'commands': [gda_util.metplus_command(
-                                          'GridStat_fcstGLOBAL_DET_'
-                                          +'obsModelAnalysis_climoERA5.conf'
-                                      )]},
-        'Temp': {'env': {'var1_name': 'TMP',
-                         'var1_levels': 'P850, P500, P250',
-                         'var1_options': '',
-                         'met_config_overrides': 'climo_mean = fcst;'},
-                 'commands': [gda_util.metplus_command(
-                                  'GridStat_fcstGLOBAL_DET_'
-                                  +'obsModelAnalysis_climoERA5.conf'
-                              )]},
-        'UWind': {'env': {'var1_name': 'UGRD',
-                          'var1_levels': 'P850, P500, P250',
-                          'var1_options': '',
-                          'met_config_overrides': 'climo_mean = fcst;'},
-                  'commands': [gda_util.metplus_command(
-                                   'GridStat_fcstGLOBAL_DET_'
-                                   +'obsModelAnalysis_climoERA5.conf'
-                               )]},
-        'VWind': {'env': {'var1_name': 'VGRD',
-                          'var1_levels': 'P850, P500, P250',
-                          'var1_options': '',
-                          'met_config_overrides': 'climo_mean = fcst;'},
-                  'commands': [gda_util.metplus_command(
-                                   'GridStat_fcstGLOBAL_DET_'
-                                   +'obsModelAnalysis_climoERA5.conf'
-                               )]},
-        'VectorWind': {'env': {'var1_name': 'UGRD',
-                               'var1_levels': 'P850, P500, P250',
-                               'var2_name': 'VGRD',
-                               'var2_levels': 'P850, P500, P250',
-                               'met_config_overrides': 'climo_mean = fcst;'},
-                       'commands': [gda_util.metplus_command(
-                                        'GridStat_fcstGLOBAL_DET_'
-                                        +'obsModelAnalysis_climoERA5_'
-                                        +'VectorWind.conf'
-                                    )]},
         'WindSpeed': {'env': {'var1_name': 'WSPD_P850',
                               'var1_levels': 'P850',
                               'var2_name': 'WSPD_P250',
@@ -568,11 +447,6 @@ generate_stats_jobs_dict = {
                       'commands': [gda_util.metplus_command(
                                        'GridStat_fcstGLOBAL_DET_'
                                        +'obsModelAnalysis_WindSpeed.conf'
-                                   )]},
-        'WindShear': {'env': {},
-                      'commands': [gda_util.metplus_command(
-                                       'GridStat_fcstGLOBAL_DET_'
-                                       +'obsModelAnalysis_WindShear.conf'
                                    )]}
     },
     'sea_ice': {

@@ -2140,7 +2140,7 @@ def check_stat_files(job_dict):
         job_dict['job_num_work_dir'],
         f"{job_dict['MODEL']}.{job_dict['DATE']}",
         f"evs.{job_dict['STEP']}.{job_dict['MODEL']}.{job_dict['RUN']}."
-        +f"{job_dict['VERIF_CASE']}.v{job_dict['DATE']}.stat"
+        +f"{job_dict['VERIF_CASE']}.winds.v{job_dict['DATE']}.stat"
     )
     file_COMOUT = os.path.join(
         job_dict['COMOUT'], f"{job_dict['MODEL']}.{job_dict['DATE']}",
