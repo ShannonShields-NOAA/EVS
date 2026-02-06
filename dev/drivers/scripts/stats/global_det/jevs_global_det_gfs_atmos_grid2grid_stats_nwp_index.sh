@@ -15,7 +15,7 @@ export model=evs
 export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/feature_global_det_NWP_Index/EVS
 
 export SENDCOM=YES
-export KEEPDATA=YES
+export KEEPDATA=NO
 export job=${PBS_JOBNAME:-jevs_global_det_gfs_atmos_grid2grid_stats_nwp_index}
 export jobid=$job.${PBS_JOBID:-$$}
 export SITE=$(cat /etc/cluster_name)
@@ -46,7 +46,7 @@ export VDATE=20240310
 export DATAROOT=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
 export TMPDIR=$DATAROOT
 export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/EVS_stand_alone
-export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/$COMPONENT
+export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/${COMPONENT}_nwp
 
 export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.gfs.nwp_index
 
