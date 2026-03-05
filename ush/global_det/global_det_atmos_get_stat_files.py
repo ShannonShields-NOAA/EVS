@@ -4,6 +4,7 @@ Name: global_det_atmos_get_stat_files.py
 Contact(s): Shannon Shields (shannon.shields@noaa.gov)
 Abstract: This gets the necessary stat files for NWP Index.
 Run By: scripts/stats/global_det/exevs_global_det_atmos_grid2grid_stats_nwp_index.sh
+        scripts/plots/global_det/exevs_global_det_atmos_grid2grid_plots_nwp_index.sh
 '''
 
 import os
@@ -21,7 +22,6 @@ STEP = os.environ['STEP']
 DATA = os.environ['DATA']
 COMIN = os.environ['COMIN']
 model_list = os.environ['model_list'].split(' ')
-ref_model = os.environ['REFERENCENAME']
 model_evs_data_dir_list = os.environ['model_evs_data_dir_list'].split(' ')
 model_file_format_list = os.environ['model_file_format_list'].split(' ')
 start_date = os.environ['start_date']
@@ -30,13 +30,15 @@ VERIF_CASE_STEP_abbrev = os.environ['VERIF_CASE_STEP_abbrev']
 VERIF_CASE_STEP_type_list = (os.environ[VERIF_CASE_STEP_abbrev+'_type_list'] \
                              .split(' '))
 USER = os.environ['USER']
-evs_ver_2d = os.environ['evs_ver_2d']
 evs_run_mode = os.environ['evs_run_mode']
 if evs_run_mode != 'production':
     QUEUESERV = os.environ['QUEUESERV']
     ACCOUNT = os.environ['ACCOUNT']
     machine = os.environ['machine']
 VERIF_CASE_STEP = VERIF_CASE+'_'+STEP
+if STEP == 'stats':
+    ref_model = os.environ['REFERENCENAME']
+    evs_ver_2d = os.environ['evs_ver_2d']
 
 # Set archive paths
 if evs_run_mode != 'production':
@@ -309,9 +311,9 @@ elif VERIF_CASE_STEP == 'grid2obs_stats':
                     nam_prod_file_format, nam_arch_file_format, evs_run_mode,
                     nam_dest_file_format
                 )
-elif STEP == 'plots' :
+elif STEP == 'plots':
     # Read in VERIF_CASE_STEP related environment variables
-    # Get model stat files
+    # Get nwp index stat files
     start_date_dt = datetime.datetime.strptime(start_date, '%Y%m%d')
     end_date_dt = datetime.datetime.strptime(end_date, '%Y%m%d')
     VERIF_CASE_STEP_data_dir = os.path.join(DATA, VERIF_CASE_STEP, 'data')
@@ -325,8 +327,8 @@ elif STEP == 'plots' :
                 if evs_run_mode == 'production':
                     source_model_date_stat_file = os.path.join(
                         model_evs_data_dir+'.'+date_dt.strftime('%Y%m%d'),
-                        'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
-                        +'v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        'evs.stats.'+model+'vsgfsv16.'+RUN+'.'+VERIF_CASE+'.'
+                        +'nwpindex.v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                 else:
                     source_model_date_stat_file = os.path.join(
@@ -336,7 +338,7 @@ elif STEP == 'plots' :
                     )
                 dest_model_date_stat_file = os.path.join(
                     VERIF_CASE_STEP_data_dir, model,
-                    model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                    model+'_nwpindex_v'+date_dt.strftime('%Y%m%d')+'.stat'
                 )
             if not os.path.exists(dest_model_date_stat_file):
                 if gda_util.check_file_exists_size(

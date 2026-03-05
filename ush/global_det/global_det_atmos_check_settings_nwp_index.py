@@ -5,6 +5,7 @@ Contact(s): Shannon Shields (shannon.shields@noaa.gov)
 Abstract: This does a check on the run's configuration
           settings for global_det atmos NWP Index jobs.
 Run By: scripts/stats/global_det/exevs_global_det_atmos_grid2grid_stats_nwp_index.sh
+        scripts/plots/global_det/exevs_global_det_atmos_grid2grid_plots_nwp_index.sh
 '''
 
 import sys
@@ -55,19 +56,9 @@ VERIF_CASE_STEP_type_list = (
     os.environ[VERIF_CASE_STEP_abbrev+'_type_list'].split(' ')
 )
 valid_VERIF_CASE_STEP_type_opts_dict = {
-    'RUN_GRID2GRID_NWP_INDEX': ['nwp']
+    'RUN_GRID2GRID_NWP_INDEX': ['nwp'],
+    'RUN_GRID2GRID_PLOTS': ['nwp_index']
 }
-for VERIF_CASE_STEP_type in VERIF_CASE_STEP_type_list:
-    if VERIF_CASE_STEP_type \
-            not in valid_VERIF_CASE_STEP_type_opts_dict[
-            'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
-            ]:
-        print("FATAL ERROR: "+VERIF_CASE_STEP_type+" not a valid option for "
-              +VERIF_CASE_STEP_abbrev+"_type_list. Valid options are "
-              +','.join(valid_VERIF_CASE_STEP_type_opts_dict[
-                  'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
-              ]))
-        sys.exit(1)
 
 # Set up setting names
 evs_global_det_atmos_settings_dict = {}
@@ -99,16 +90,27 @@ evs_global_det_atmos_settings_dict['modules'] = ['MET_ROOT', 'METPLUS_PATH']
 evs_global_det_atmos_settings_dict['RUN_GRID2GRID_NWP_INDEX'] = [
     'g2gs_type_list'
 ]
+evs_global_det_atmos_settings_dict['RUN_GRID2GRID_PLOTS'] = [
+    'g2gp_model_plot_name_list', 'g2gp_type_list',
+    'g2gp_event_equalization'
+]
 
 verif_case_step_settings_dict = {
     'RUN_GRID2GRID_NWP_INDEX': {
         'nwp': ['valid_hr_list']
+    },
+    'RUN_GRID2GRID_PLOTS': {
+        'nwp_index': ['truth_name_list', 'init_hr_list', 'valid_hr_list']
     }
 }
 
 # Select dictionary to check
-env_check_group_list = ['evs', 'shared', 'modules',
-                        'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX']
+if STEP.upper() == 'STATS':
+    env_check_group_list = ['evs', 'shared', 'modules',
+                            'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX']
+elif STEP.upper() == 'PLOTS':
+    env_check_group_list = ['evs', 'shared', 'modules',
+                            'RUN_'+VERIF_CASE.upper()+'_'+STEP.upper()]
 for env_check_group in env_check_group_list:
     env_var_check_list = (
         evs_global_det_atmos_settings_dict[env_check_group]
@@ -128,11 +130,18 @@ for env_check_group in env_check_group_list:
             sys.exit(1)
 verif_type_list  = os.environ[VERIF_CASE_STEP_abbrev+'_type_list'].split(' ')
 for verif_type in verif_type_list:
-    verif_type_env_var_list = (
-        verif_case_step_settings_dict[
-            'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
-        ][verif_type]
-    )
+    if STEP.upper() == 'STATS':
+        verif_type_env_var_list = (
+            verif_case_step_settings_dict[
+                'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
+            ][verif_type]
+        )
+    elif STEP.upper() == 'PLOTS':
+        verif_type_env_var_list = (
+            verif_case_step_settings_dict[
+                'RUN_'+VERIF_CASE.upper()+'_'+STEP.upper()
+            ][verif_type]
+        )
     if f"{VERIF_CASE_STEP_abbrev}_{verif_type}_fhr_list" \
             in list(os.environ.keys()):
         verif_type_env_var_list.append('fhr_list')
@@ -151,18 +160,32 @@ for verif_type in verif_type_list:
 # Do check for list variables lengths
 check_config_var_len_list = ['model_evs_data_dir_list',
                              'model_file_format_list']
+if STEP.upper() == 'PLOTS':
+    check_config_var_len_list.append(VERIF_CASE_STEP_abbrev
+                                     +'_model_plot_name_list')
 verif_case_step_check_len_dict = {
     'RUN_GRID2GRID_NWP_INDEX': {
         'nwp': []
     },
+    'RUN_GRID2GRID_PLOTS': {
+        'nwp_index': ['truth_name_list']
+    },
 }
 for verif_type in verif_type_list:
-    for check_list in verif_case_step_check_len_dict[
-            'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
-             ][verif_type]:
-        check_config_var_len_list.append(
-            VERIF_CASE_STEP_abbrev+'_'+verif_type+'_'+check_list
-        )
+    if STEP.upper() == 'STATS':
+        for check_list in verif_case_step_check_len_dict[
+                'RUN_'+VERIF_CASE.upper()+'_NWP_INDEX'
+                 ][verif_type]:
+            check_config_var_len_list.append(
+                VERIF_CASE_STEP_abbrev+'_'+verif_type+'_'+check_list
+            )
+    elif STEP.upper() == 'PLOTS':
+        for check_list in verif_case_step_check_len_dict[
+                'RUN_'+VERIF_CASE.upper()+'_'+STEP.upper()
+                ][verif_type]:
+            check_config_var_len_list.append(
+                VERIF_CASE_STEP_abbrev+'_'+verif_type+'_'+check_list
+            )
 for config_var in check_config_var_len_list:
     if len(os.environ[config_var].split(' ')) \
             != len(os.environ['model_list'].split(' ')):
@@ -178,6 +201,10 @@ valid_config_var_values_dict = {
     'KEEPDATA': ['YES', 'NO'],
     'SENDCOM': ['YES', 'NO'],
 }
+if STEP.upper() == 'PLOTS':
+    valid_config_var_values_dict[
+        VERIF_CASE_STEP_abbrev+'_event_equalization'
+    ] = ['YES', 'NO']
 
 # Run through and check config variables from dictionary
 for config_var in list(valid_config_var_values_dict.keys()):

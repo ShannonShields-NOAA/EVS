@@ -4,6 +4,7 @@ Name: global_det_atmos_create_output_dirs_nwp_index.py
 Contact(s): Shannon Shields (shannon.shields@noaa.gov)
 Abstract: This creates the base directories and their subdirectories.
 Run By: scripts/stats/global_det/exevs_global_det_atmos_grid2grid_stats_nwp_index.sh
+        scripts/plots/global_det/exevs_global_det_atmos_grid2grid_plots_nwp_index.sh
 '''
 
 import os
