@@ -17,6 +17,7 @@ import numpy as np
 import subprocess
 import copy
 import global_det_atmos_util as gda_util
+import global_det_nwp_util as gdn_util
 
 print("BEGIN: "+os.path.basename(__file__))
 
@@ -138,7 +139,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
     verif_type_plot_jobs_dict = JOB_GROUP_dict[verif_type]
     for verif_type_job in list(verif_type_plot_jobs_dict.keys()):
         # Initialize job environment dictionary
-        job_env_dict = gda_util.initalize_job_env_dict(
+        job_env_dict = gdn_util.initialize_job_env_dict(
             verif_type, JOB_GROUP,
             VERIF_CASE_STEP_abbrev_type, verif_type_job
         )
@@ -160,15 +161,13 @@ for verif_type in VERIF_CASE_STEP_type_list:
                         daily_fhr_list.append(str(fhr))
                     job_env_dict['fhr_list'] = ', '.join(daily_fhr_list)
         if JOB_GROUP in ['condense_stats', 'filter_stats', 'make_plots']:
-            if verif_type == 'pres_levs':
+            if verif_type == 'nwp_index':
                 obs_list = (
                     os.environ[VERIF_CASE_STEP_abbrev_type+'_truth_name_list']\
                     .split(' ')
                 )
             elif verif_type == 'means':
                 obs_list = model_list
-            elif verif_type == 'nwp_index':
-                obs_list = 'gfsv17_anl,gfs_anl'
             else:
                 obs_list = [
                     verif_type_plot_jobs_dict[verif_type_job]['obs_name']
@@ -264,7 +263,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
                 njobs+=1
                 job_env_dict['job_id'] = 'job'+str(njobs)
                 job_work_dir, job_DATA_dir, job_COMOUT_dir = (
-                    gda_util.get_plot_job_dirs(DATA, COMOUT, JOB_GROUP,
+                    gdn_util.get_plot_job_dirs(DATA, COMOUT, JOB_GROUP,
                                                job_env_dict)
                 )
                 job_env_dict['job_work_dir'] = job_work_dir
@@ -297,7 +296,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
                 if write_job_cmds:
                     gda_util.make_dir(job_env_dict['job_work_dir'])
                     job.write(
-                        gda_util.python_command('global_det_atmos_plots.py',[])
+                        gda_util.python_command('global_det_nwp_plots.py',[])
                         +'\n'
                     )
                     job.write('export err=$?; err_chk'+'\n')
@@ -416,7 +415,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
                         njobs+=1
                         job_env_dict['job_id'] = 'job'+str(njobs)
                         job_work_dir, job_DATA_dir, job_COMOUT_dir = (
-                            gda_util.get_plot_job_dirs(DATA, COMOUT, JOB_GROUP,
+                            gdn_util.get_plot_job_dirs(DATA, COMOUT, JOB_GROUP,
                                                        job_env_dict)
                         )
                         job_env_dict['job_work_dir'] = job_work_dir
@@ -461,7 +460,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
                         if write_job_cmds:
                             gda_util.make_dir(job_env_dict['job_work_dir'])
                             job.write(
-                                gda_util.python_command('global_det_atmos_plots.py',
+                                gda_util.python_command('global_det_nwp_plots.py',
                                                         [])+'\n'
                             )
                             job.write('export err=$?; err_chk'+'\n')
@@ -517,7 +516,7 @@ for verif_type in VERIF_CASE_STEP_type_list:
                 if write_job_cmds:
                     gda_util.make_dir(job_env_dict['job_work_dir'])
                     job.write(
-                        gda_util.python_command('global_det_atmos_plots.py',
+                        gda_util.python_command('global_det_nwp_plots.py',
                                                 [])
                         +'\n'
                     )
