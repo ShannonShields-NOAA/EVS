@@ -39,8 +39,8 @@ export err=$?; err_chk
 python $USHevs/global_det/global_det_atmos_get_stat_files.py
 export err=$?; err_chk
 
-# Create and run job scripts for condense_stats, filter_stats and make_plots
-for group in condense_stats filter_stats make_plots; do
+# Create and run job scripts for condense_stats and make_plots
+for group in condense_stats make_plots; do
     export JOB_GROUP=$group
     echo "Creating and running jobs for grid-to-grid plots: ${JOB_GROUP}"
     python $USHevs/global_det/global_det_atmos_plots_grid2grid_create_job_scripts_nwp_index.py
