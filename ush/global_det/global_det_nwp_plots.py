@@ -90,10 +90,10 @@ elif JOB_GROUP == 'make_plots':
     init_hr_end = os.environ['init_hr_end']
     init_hr_inc = os.environ['init_hr_inc']
     fhr_list = os.environ['fhr_list']
-    #grid = os.environ['grid']
-    #event_equalization = os.environ['event_equalization']
-    #interp_method = os.environ['interp_method']
-    #interp_points = os.environ['interp_points']
+    grid = os.environ['grid']
+    event_equalization = os.environ['event_equalization']
+    interp_method = os.environ['interp_method']
+    interp_points = os.environ['interp_points']
     fcst_var_level_list = os.environ['fcst_var_level_list'].split(', ')
     fcst_var_thresh_list = os.environ['fcst_var_thresh_list'].split(', ')
     obs_var_level_list = os.environ['obs_var_level_list'].split(', ')
@@ -174,10 +174,10 @@ if JOB_GROUP != 'tar_images':
 else:
     original_plot_info_dict = {}
 if JOB_GROUP in ['filter_stats', 'make_plots']:
-    #original_plot_info_dict['grid'] = grid
-    #original_plot_info_dict['interp_method'] = interp_method
-    #original_plot_info_dict['interp_points'] = interp_points
-    #original_plot_info_dict['event_equalization'] = event_equalization
+    original_plot_info_dict['grid'] = grid
+    original_plot_info_dict['interp_method'] = interp_method
+    original_plot_info_dict['interp_points'] = interp_points
+    original_plot_info_dict['event_equalization'] = event_equalization
     if JOB_GROUP == 'filter_stats':
         original_plot_info_dict['fcst_var_name'] = fcst_var_name
         original_plot_info_dict['fcst_var_level'] = fcst_var_level
@@ -424,7 +424,7 @@ elif JOB_GROUP == 'make_plots':
                     ['24', '72', '120']:
                 make_ts = False
             if make_ts:
-                plot_ts = gdap_ts.TimeSeries(logger, job_input_dir,
+                plot_ts = gdap_ts.TimeSeries(logger, job_input_dir+'/..',
                                              job_work_dir, model_info_dict,
                                              date_info_dict, plot_info_dict,
                                              met_info_dict, logo_dir)

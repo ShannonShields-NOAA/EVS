@@ -103,6 +103,14 @@ if JOB_GROUP == 'filter_stats':
 make_plots_jobs_dict = copy.deepcopy(condense_stats_jobs_dict)
 #### nwp_index
 for nwp_index_job in list(make_plots_jobs_dict['nwp_index'].keys()):
+    make_plots_jobs_dict['nwp_index'][nwp_index_job]['grid'] = 'G004'
+    make_plots_jobs_dict['nwp_index'][nwp_index_job]['fcst_var_dict']['threshs'] = [
+        'NA'
+    ]
+    make_plots_jobs_dict['nwp_index'][nwp_index_job]['obs_var_dict']['threshs'] = [
+        'NA'
+    ]
+    make_plots_jobs_dict['nwp_index'][nwp_index_job]['interps'] = ['NEAREST/1']
     del make_plots_jobs_dict['nwp_index'][nwp_index_job]['line_types']
     make_plots_jobs_dict['nwp_index'][nwp_index_job]['line_type_stats'] = [
         'SSIDX/SS_INDEX'
@@ -148,12 +156,9 @@ for verif_type in VERIF_CASE_STEP_type_list:
         job_env_dict['NDAYS'] = NDAYS
         job_env_dict['date_type'] = 'VALID'
         if JOB_GROUP in ['filter_stats', 'make_plots']:
-            valid_hr_start = 00
-            valid_hr_end = 12
-            valid_hr_inc = 24
-            #valid_hr_start = int(job_env_dict['valid_hr_start'])
-            #valid_hr_end = int(job_env_dict['valid_hr_end'])
-            #valid_hr_inc = int(job_env_dict['valid_hr_inc'])
+            valid_hr_start = int(job_env_dict['valid_hr_start'])
+            valid_hr_end = int(job_env_dict['valid_hr_end'])
+            valid_hr_inc = int(job_env_dict['valid_hr_inc'])
             valid_hrs = list(range(valid_hr_start,
                                    valid_hr_end+valid_hr_inc,
                                    valid_hr_inc))
@@ -202,13 +207,14 @@ for verif_type in VERIF_CASE_STEP_type_list:
                 valid_hrs
             ))
         elif JOB_GROUP == 'make_plots':
-            #job_env_dict['grid'] = (
-                #verif_type_plot_jobs_dict[verif_type_job]['grid']
-            #)
+            job_env_dict['grid'] = (
+                verif_type_plot_jobs_dict[verif_type_job]['grid']
+            )
             JOB_GROUP_verif_type_job_product_loops = list(itertools.product(
                 verif_type_plot_jobs_dict[verif_type_job]['line_type_stats'],
                 verif_type_plot_jobs_dict[verif_type_job]['plots'],
-                verif_type_plot_jobs_dict[verif_type_job]['vx_masks']
+                verif_type_plot_jobs_dict[verif_type_job]['vx_masks'],
+                verif_type_plot_jobs_dict[verif_type_job]['interps']
             ))
         elif JOB_GROUP == 'tar_images':
             JOB_GROUP_verif_type_job_product_loops = []
@@ -304,9 +310,9 @@ for verif_type in VERIF_CASE_STEP_type_list:
                     job.write('export err=$?; err_chk'+'\n')
                 job.close()
             elif JOB_GROUP == 'make_plots':
-                #job_env_dict['event_equalization'] = os.environ[
-                    #VERIF_CASE_STEP_abbrev+'_event_equalization'
-                #]
+                job_env_dict['event_equalization'] = os.environ[
+                    VERIF_CASE_STEP_abbrev+'_event_equalization'
+                ]
                 job_env_dict['model_list'] = ', '.join(model_list)
                 job_env_dict['model_plot_name_list'] = (
                     ', '.join(model_plot_name_list)
@@ -316,8 +322,8 @@ for verif_type in VERIF_CASE_STEP_type_list:
                 job_env_dict['stat'] = loop_info[0].split('/')[1]
                 job_env_dict['plot'] = loop_info[1]
                 job_env_dict['vx_mask'] = loop_info[2]
-                #job_env_dict['interp_method'] = loop_info[3].split('/')[0]
-                #job_env_dict['interp_points'] = loop_info[3].split('/')[1]
+                job_env_dict['interp_method'] = loop_info[3].split('/')[0]
+                job_env_dict['interp_points'] = loop_info[3].split('/')[1]
                 if job_env_dict['plot'] == 'valid_hour_average':
                     plot_valid_hrs_loop = [valid_hrs]
                 else:
@@ -329,7 +335,10 @@ for verif_type in VERIF_CASE_STEP_type_list:
                         ['fcst_var_dict']['threshs']
                     ]
                 else:
-                    plot_fcst_threshs_loop = 'NA'
+                    plot_fcst_threshs_loop = (
+                        verif_type_plot_jobs_dict[verif_type_job]\
+                        ['fcst_var_dict']['threshs']
+                    )
                 if job_env_dict['plot'] in ['stat_by_level', 'lead_by_level']:
                     if verif_type_plot_jobs_dict[verif_type_job]\
                             ['fcst_var_dict']['name'] == 'O3MR':

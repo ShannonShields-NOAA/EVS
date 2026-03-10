@@ -151,6 +151,7 @@ class TimeSeries:
         df = pd.read_csv(nwp_stat, sep='\s+')
         df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
         df = df.sort_values('FCST_VALID_BEG')
+        df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
         #all_model_df = gda_util.build_df(
             #'make_plots', self.logger, self.input_dir, self.output_dir,
             #self.model_info_dict, self.met_info_dict,
@@ -230,7 +231,7 @@ class TimeSeries:
         stat_min = np.ma.masked_invalid(np.nan)
         stat_max = np.ma.masked_invalid(np.nan)
         stat_plot_name = 'NWP Index'
-        fcst_units = all_model_df['FCST_UNITS'].values.astype('str').tolist()
+        fcst_units = df['FCST_UNITS'].values.astype('str').tolist()
         fcst_units = np.unique(fcst_units)
         fcst_units = np.delete(fcst_units, np.where(fcst_units == 'nan'))
         if len(fcst_units) > 1:
@@ -312,9 +313,9 @@ class TimeSeries:
         )
         obs_plotted = False
         for model_idx in model_idx_list:
-            model_num = model_idx.split('/')[0]
-            model_num_name = model_idx.split('/')[1]
-            model_num_plot_name = model_idx.split('/')[2]
+            model_num = 'model1'
+            model_num_name = model_idx.split(',')[0]
+            model_num_plot_name = self.model_info_dict[model_num]['plot_name']
             model_num_obs_name = self.model_info_dict[model_num]['obs_name']
             model_num_data = df.loc[model_idx]
             self.logger.debug(f"Plotting {model_num} [{model_num_name},"
@@ -327,7 +328,8 @@ class TimeSeries:
                 model_num_plot_settings_dict = (
                     model_plot_settings_dict[model_num]
                 )
-            masked_model_num_data = np.ma.masked_invalid(model_num_data)
+            # Select only the SS_INDEX column before masking
+            masked_model_num_data = np.ma.masked_invalid(model_num_data['SS_INDEX'])
             model_num_npts = (
                 len(masked_model_num_data)
                 - np.ma.count_masked(masked_model_num_data)
@@ -350,7 +352,8 @@ class TimeSeries:
             if model_num_npts != 0:
                 if self.plot_info_dict['line_type'] in ['CNT', 'GRAD',
                                                         'CTS', 'NBRCTS',
-                                                        'NBRCNT', 'VCNT']:
+                                                        'NBRCNT', 'VCNT',
+                                                        'SSIDX']:
                     avg_method = 'mean'
                     calc_avg_df = model_num_data
                     if self.plot_info_dict['stat'] == 'FBAR_OBAR':

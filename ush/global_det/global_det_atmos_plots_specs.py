@@ -872,7 +872,8 @@ class PlotSpecs:
             'SPlains': 'buk_spl',
             'SPO': 'spo',
             'SRockies': 'buk_srk',
-            'TROPICS': 'tropics'
+            'TROPICS': 'tropics',
+            'TROPICS,NHEM,SHEM': 'nwp_regions'
         }
         if plot_info_dict['vx_mask'] in list(region_savefig_dict.keys()):
             region_savefig_name = (
