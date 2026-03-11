@@ -3,8 +3,8 @@
 #PBS -S /bin/bash
 #PBS -q dev
 #PBS -A VERF-DEV
-#PBS -l walltime=00:45:00
-#PBS -l place=vscatter:exclhost,select=1:ncpus=128:ompthreads=1:mem=150GB
+#PBS -l walltime=00:10:00
+#PBS -l place=vscatter:exclhost,select=1:ncpus=5:ompthreads=1:mem=150GB
 #PBS -l debug=true
 
 set -x
@@ -31,7 +31,7 @@ evs_ver_2d=$(echo $evs_ver | cut -d'.' -f1-2)
 
 export machine=WCOSS2
 export USE_CFP=YES
-export nproc=128
+export nproc=5
 
 export envir=prod
 export NET=evs

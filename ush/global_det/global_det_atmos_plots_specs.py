@@ -225,7 +225,8 @@ class PlotSpecs:
             'RMSE': 'Root Mean Square Error',
             'S1': 'S1 Score',
             'SRATIO': 'Success Ratio (1-FAR)',
-            'STDEV_ERR': 'Standard Deviation of Error'
+            'STDEV_ERR': 'Standard Deviation of Error',
+            'SS_INDEX': 'NWP Index'
         }
         if stat in list(stat_plot_name_dict.keys()):
             stat_plot_name = stat_plot_name_dict[stat]
@@ -595,9 +596,11 @@ class PlotSpecs:
                             and str(other_hr).zfill(2)+'Z' in other_hr_list:
                         title_other_hr_list.append(str(other_hr).zfill(2)+'Z')
             title_other_hr_list.sort()
-            date_plot_name = (date_plot_name+', '.join(date_type_hr_list)
-                              +', init. hours: '
-                              +', '.join(title_other_hr_list))
+            date_plot_name = (date_plot_name+'00Z and 12Z, '
+                              +'init. hours: 00Z and 12Z, ')
+            #date_plot_name = (date_plot_name+', '.join(date_type_hr_list)
+                              #+', init. hours: '
+                              #+', '.join(title_other_hr_list))
         elif date_type == 'INIT':
             for date_type_hr in date_type_hr_list:
                 for forecast_hour in forecast_hour_list:
@@ -623,8 +626,8 @@ class PlotSpecs:
                     forecast_day_list.append(str(forecast_day))
             if len(forecast_hour_list) == 1:
                 date_plot_name = (date_plot_name
-                                  +', Forecast Day '+forecast_day_list[0]+' '
-                                  +'(Hour '+forecast_hour_list[0]+')')
+                                  +'Forecast Day '+forecast_day_list[0]+' '
+                                  +'Avg')
             else:
                 date_plot_name = (date_plot_name
                                   +'\nForecast Days '
@@ -703,12 +706,11 @@ class PlotSpecs:
                                                'FBAR_OBAR']:
             var_thresh_for_title = 'NA'
         plot_title = (plot_title
-                      +self.get_var_plot_name(var_name_for_title,
-                                              var_level_for_title))
+                      +'GFSv17 vs GFSv16')
         if plot_info_dict['fcst_var_name'] == 'ICEEX_DAILYAVG' \
                 and units == '10^6_km^2':
             units = 'x'+units.replace('_', ' ')
-        plot_title = plot_title+' '+'('+units+')'
+        #plot_title = plot_title+' '+'('+units+')'
         if var_thresh_for_title != 'NA'\
                and plot_info_dict['fcst_var_name'] not in ['SST_DAILYAVG']:
             plot_title = plot_title+', '+var_thresh_for_title+' '+units
@@ -721,8 +723,7 @@ class PlotSpecs:
                           +'Neighborhood Pts: '
                           +plot_info_dict['interp_points'])
         plot_title = (plot_title+' - '
-                      +'Validation: '
-                      +self.get_obs_plot_name(plot_info_dict['ob_name']))
+                      +'Validation: Model\'s Own Anl.')
         plot_title = (plot_title+'\n'
                       +self.get_dates_plot_name(date_info_dict['date_type'],
                                                 date_info_dict['start_date'],
@@ -814,7 +815,7 @@ class PlotSpecs:
                 plot_type_savefig_name = (plot_type_savefig_name
                                           +str(valid_hr).zfill(2))
                 valid_hr+=int(date_info_dict['valid_hr_inc'])
-            plot_type_savefig_name = plot_type_savefig_name+'Z'
+            plot_type_savefig_name = plot_type_savefig_name+'Zand12Z'
         if self.plot_type in ['time_series',
                               'stat_by_level', 'performance_diagram',
                               'threshold_average']:
@@ -884,8 +885,7 @@ class PlotSpecs:
         savefig_name = (
             'evs.'
             +component_savefig_name+'.'
-            +metric_savefig_name+'.'
-            +parameter_savefig_name+'_'+level_savefig_name+'.'
+            +parameter_savefig_name+'.'
             +ndays_savefig_name+'.'
             +plot_type_savefig_name+'.'
             +grid_savefig_name+'_'+region_savefig_name

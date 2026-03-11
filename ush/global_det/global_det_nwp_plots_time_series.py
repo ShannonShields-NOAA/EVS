@@ -14,7 +14,6 @@ import datetime
 import glob
 import pandas as pd
 pd.plotting.deregister_matplotlib_converters()
-#pd.plotting.register_matplotlib_converters()
 import numpy as np
 import matplotlib
 matplotlib.use('agg')
@@ -235,7 +234,7 @@ class TimeSeries:
         fcst_units = np.unique(fcst_units)
         fcst_units = np.delete(fcst_units, np.where(fcst_units == 'nan'))
         if len(fcst_units) > 1:
-            self.logger.error(f"Have multilple units: {', '.join(fcst_units)}")
+            self.logger.error(f"Have multiple units: {', '.join(fcst_units)}")
             sys.exit(1)
         elif len(fcst_units) == 0:
             self.logger.debug("Cannot get variables units, leaving blank")
@@ -285,7 +284,7 @@ class TimeSeries:
         ax.set_xlabel(self.date_info_dict['date_type'].title()+' Date')
         ax.set_xlim([plot_dates[0], plot_dates[-1]])
         ax.set_xticks(plot_dates[::xtick_intvl])
-        ax.xaxis.set_major_formatter(md.DateFormatter('%HZ %d%b%Y'))
+        ax.xaxis.set_major_formatter(md.DateFormatter('%d%b%Y'))
         hr_minor_tick_type = self.date_info_dict['date_type'].lower()
         ax.xaxis.set_minor_locator(
             md.HourLocator(byhour=range(
@@ -330,13 +329,19 @@ class TimeSeries:
                 )
             # Select only the SS_INDEX column before masking
             masked_model_num_data = np.ma.masked_invalid(model_num_data['SS_INDEX'])
+            self.logger.debug(f"SS Index Data: {masked_model_num_data}")
             model_num_npts = (
                 len(masked_model_num_data)
                 - np.ma.count_masked(masked_model_num_data)
             )
+            self.logger.debug(f"Number of plot points: {model_num_npts}")
+            # Get the specific dates for this model subset
+            plot_dates = model_num_data.index
+            # Mask the dates using the same mask from the SS_INDEX
             masked_plot_dates = np.ma.masked_where(
                 np.ma.getmask(masked_model_num_data), plot_dates
             )
+            self.logger.debug(f"Plot Dates: {masked_plot_dates}")
             if self.plot_info_dict['stat'] == 'FBAR_OBAR':
                 obar_model_num_data = obar_stat_df.loc[model_idx]
                 obar_masked_model_num_data = np.ma.masked_invalid(
@@ -355,7 +360,7 @@ class TimeSeries:
                                                         'NBRCNT', 'VCNT',
                                                         'SSIDX']:
                     avg_method = 'mean'
-                    calc_avg_df = model_num_data
+                    calc_avg_df = model_num_data['SS_INDEX']
                     if self.plot_info_dict['stat'] == 'FBAR_OBAR':
                         obar_calc_avg_df = obar_model_num_data
                 else:
@@ -403,7 +408,7 @@ class TimeSeries:
                     linestyle = model_num_plot_settings_dict['linestyle'],
                     linewidth = model_num_plot_settings_dict['linewidth'],
                     markersize = model_num_plot_settings_dict['markersize'],
-                    label = (model_num_plot_name+' '+model_num_avg_label+' '
+                    label = ('NWP Index '+model_num_avg_label+' '
                              +str(model_num_npts)+' days'),
                     zorder = (len(list(self.model_info_dict.keys()))
                               - model_idx_list.index(model_idx) + 4)
