@@ -229,7 +229,7 @@ class TimeSeries:
         date_intvl = int((plot_dates[1]-plot_dates[0]).total_seconds())
         stat_min = np.ma.masked_invalid(np.nan)
         stat_max = np.ma.masked_invalid(np.nan)
-        stat_plot_name = 'NWP Index'
+        stat_plot_name = 'Skill Score Index'
         fcst_units = df['FCST_UNITS'].values.astype('str').tolist()
         fcst_units = np.unique(fcst_units)
         fcst_units = np.delete(fcst_units, np.where(fcst_units == 'nan'))
@@ -408,7 +408,7 @@ class TimeSeries:
                     linestyle = model_num_plot_settings_dict['linestyle'],
                     linewidth = model_num_plot_settings_dict['linewidth'],
                     markersize = model_num_plot_settings_dict['markersize'],
-                    label = ('NWP Index '+model_num_avg_label+' '
+                    label = ('Skill Score Index '+model_num_avg_label+' '
                              +str(model_num_npts)+' days'),
                     zorder = (len(list(self.model_info_dict.keys()))
                               - model_idx_list.index(model_idx) + 4)

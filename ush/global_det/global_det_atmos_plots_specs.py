@@ -226,7 +226,7 @@ class PlotSpecs:
             'S1': 'S1 Score',
             'SRATIO': 'Success Ratio (1-FAR)',
             'STDEV_ERR': 'Standard Deviation of Error',
-            'SS_INDEX': 'NWP Index'
+            'SS_INDEX': 'Skill Score Index'
         }
         if stat in list(stat_plot_name_dict.keys()):
             stat_plot_name = stat_plot_name_dict[stat]
@@ -596,8 +596,8 @@ class PlotSpecs:
                             and str(other_hr).zfill(2)+'Z' in other_hr_list:
                         title_other_hr_list.append(str(other_hr).zfill(2)+'Z')
             title_other_hr_list.sort()
-            date_plot_name = (date_plot_name+'00Z and 12Z, '
-                              +'init. hours: 00Z and 12Z, ')
+            #date_plot_name = (date_plot_name+'00Z and 12Z, '
+                              #+'init. hours: 00Z and 12Z, ')
             #date_plot_name = (date_plot_name+', '.join(date_type_hr_list)
                               #+', init. hours: '
                               #+', '.join(title_other_hr_list))
@@ -624,15 +624,15 @@ class PlotSpecs:
                     forecast_day_list.append(str(int(forecast_day)))
                 else:
                     forecast_day_list.append(str(forecast_day))
-            if len(forecast_hour_list) == 1:
-                date_plot_name = (date_plot_name
-                                  +'Forecast Day '+forecast_day_list[0]+' '
-                                  +'Avg')
-            else:
-                date_plot_name = (date_plot_name
-                                  +'\nForecast Days '
-                                  +','.join(forecast_day_list)+' '
-                                  +'(Hours '+','.join(forecast_hour_list)+')')
+            #if len(forecast_hour_list) == 1:
+                #date_plot_name = (date_plot_name
+                                  #+'Forecast Day '+forecast_day_list[0]+' '
+                                  #+'Avg')
+            #else:
+                #date_plot_name = (date_plot_name
+                                  #+'\nForecast Days '
+                                  #+','.join(forecast_day_list)+' '
+                                  #+'(Hours '+','.join(forecast_hour_list)+')')
         return date_plot_name
 
     def get_plot_title(self, plot_info_dict, date_info_dict, units):
@@ -649,10 +649,13 @@ class PlotSpecs:
                               (string)
         """
         plot_title = (
-            self.get_stat_plot_name(plot_info_dict['stat'])+' - '
-            +plot_info_dict['grid']+'/'
-            +self.get_vx_mask_plot_name(plot_info_dict['vx_mask'])+'\n'
+            self.get_stat_plot_name(plot_info_dict['stat'])+'\n'
         )
+        #plot_title = (
+            #self.get_stat_plot_name(plot_info_dict['stat'])+' - '
+            #+plot_info_dict['grid']+'/'
+            #+self.get_vx_mask_plot_name(plot_info_dict['vx_mask'])+'\n'
+        #)
         if date_info_dict['date_type'] == 'VALID':
             date_type_hr_list = [
                 str(hr).zfill(2)+'Z' \
@@ -706,7 +709,7 @@ class PlotSpecs:
                                                'FBAR_OBAR']:
             var_thresh_for_title = 'NA'
         plot_title = (plot_title
-                      +'GFSv17 vs GFSv16')
+                      +'GFSv17 vs. GFSv16')
         if plot_info_dict['fcst_var_name'] == 'ICEEX_DAILYAVG' \
                 and units == '10^6_km^2':
             units = 'x'+units.replace('_', ' ')
@@ -723,7 +726,7 @@ class PlotSpecs:
                           +'Neighborhood Pts: '
                           +plot_info_dict['interp_points'])
         plot_title = (plot_title+' - '
-                      +'Validation: Model\'s Own Anl.')
+                      +'Validation: Model\'s Own Analysis')
         plot_title = (plot_title+'\n'
                       +self.get_dates_plot_name(date_info_dict['date_type'],
                                                 date_info_dict['start_date'],
