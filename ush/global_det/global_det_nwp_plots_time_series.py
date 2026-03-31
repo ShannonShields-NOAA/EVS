@@ -400,19 +400,32 @@ class TimeSeries:
                         obar_model_num_avg_label = format(
                             round(obar_model_num_avg, 3), '.3f'
                         )
+                # Set plot without markers for full period
                 ax.plot_date(
                     np.ma.compressed(masked_plot_dates),
                     np.ma.compressed(masked_model_num_data),
-                    fmt=model_num_plot_settings_dict['marker'],
+                    marker=None,
                     color = model_num_plot_settings_dict['color'],
                     linestyle = model_num_plot_settings_dict['linestyle'],
                     linewidth = model_num_plot_settings_dict['linewidth'],
-                    markersize = model_num_plot_settings_dict['markersize'],
                     label = ('Skill Score Index '+model_num_avg_label+' '
                              +str(model_num_npts)+' days'),
                     zorder = (len(list(self.model_info_dict.keys()))
                               - model_idx_list.index(model_idx) + 4)
                 )
+                #ax.plot_date(
+                    #np.ma.compressed(masked_plot_dates),
+                    #np.ma.compressed(masked_model_num_data),
+                    #fmt=model_num_plot_settings_dict['marker'],
+                    #color = model_num_plot_settings_dict['color'],
+                    #linestyle = model_num_plot_settings_dict['linestyle'],
+                    #linewidth = model_num_plot_settings_dict['linewidth'],
+                    #markersize = model_num_plot_settings_dict['markersize'],
+                    #label = ('Skill Score Index '+model_num_avg_label+' '
+                             #+str(model_num_npts)+' days'),
+                    #zorder = (len(list(self.model_info_dict.keys()))
+                              #- model_idx_list.index(model_idx) + 4)
+                #)
                 if masked_model_num_data.min() < stat_min \
                         or np.ma.is_masked(stat_min):
                     stat_min = masked_model_num_data.min()
