@@ -312,6 +312,17 @@ class TimeSeries:
             stat_df.index.get_level_values(0).unique().tolist()
         )
         obs_plotted = False
+        # Identify columns that are strictly numbers
+        # Assuming 'TOTAL' and everything after it in your list is a number:
+        #met_version_line_type_col_list = sub_util.get_met_line_type_cols(
+            #logger, met_info_dict['root'], met_info_dict['version'], line_type
+        #)
+        #float_idx = met_version_line_type_col_list.index('TOTAL')
+        #numeric_cols = met_version_line_type_col_list[float_idx:]
+        # Convert only those specific columns
+        #for col in numeric_cols:
+            #if col in all_model_df.columns:
+                #all_model_df[col] = pd.to_numeric(all_model_df[col], errors='coerce')
         for model_idx in model_idx_list:
             model_num = model_idx.split('/')[0]
             model_num_name = model_idx.split('/')[1]
