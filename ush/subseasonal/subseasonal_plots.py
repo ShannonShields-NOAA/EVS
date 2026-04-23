@@ -8,6 +8,8 @@ Abstract: This script is run by subseasonal_plots_grid2grid_create_job_
           This script is the main driver for the plotting scripts.
 '''
 
+import warnings
+warnings.filterwarnings("ignore", message=".*dtype.*", category=FutureWarning)
 import os
 import sys
 import logging

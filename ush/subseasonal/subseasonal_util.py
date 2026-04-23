@@ -5,6 +5,8 @@ Contact(s): Shannon Shields
 Abstract: This contains many functions used across subseasonal.
 '''
 
+import warnings
+warnings.filterwarnings("ignore", message=".*dtype.*", category=FutureWarning)
 import os
 import datetime
 import numpy as np
