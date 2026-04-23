@@ -113,12 +113,12 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         )
                         source_model_date_stat_file = os.path.join(
                             model_evs_data_dir,
-                            'combined.evs.stats.gfs.'+RUN+'.'+VERIF_CASE+'.'
+                            'test.combined.evs.stats.gfs.'+RUN+'.'+VERIF_CASE+'.'
                             +'v'+date_dt.strftime('%Y%m%d')+'.stat'
                         )
                         source_model_ref_date_stat_file = os.path.join(
                             model_ref_evs_data_dir,
-                            'combined.evs.stats.'+ref_model+'.'+RUN+'.'+VERIF_CASE+'.'
+                            'test.combined.evs.stats.'+ref_model+'.'+RUN+'.'+VERIF_CASE+'.'
                             +'v'+date_dt.strftime('%Y%m%d')+'.stat'
                         )
                     else:
