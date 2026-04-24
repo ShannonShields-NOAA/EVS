@@ -9,6 +9,7 @@ module load netcdf/${netcdf_ver}
 module load libpng/${libpng_ver}
 module load libjpeg/${libjpeg_ver}
 module load gsl/${gsl_ver}
+module use /apps/ops/para/nco/modulefiles/core/
 module load prod_util/${prod_util_ver}
 module load cray-mpich/${craympich_ver}
 module load cray-pals/${craypals_ver}

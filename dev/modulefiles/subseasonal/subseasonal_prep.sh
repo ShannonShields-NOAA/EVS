@@ -12,13 +12,13 @@ module load zlib/${zlib_ver}
 module load jasper/${jasper_ver}
 module load libpng/${libpng_ver}
 module load libjpeg/${libjpeg_ver}
-module load libjpeg-turbo/2.1.0
 module load gsl/${gsl_ver}
 module load g2c/${g2c_ver}
 module load proj/${proj_ver}
 module load fckit/${fckit_ver}
 module load atlas/${atlas_ver}
 module load eckit/${eckit_ver}
+module use /apps/ops/para/nco/modulefiles/core/
 module load prod_util/${prod_util_ver}
 module load cray-mpich/${craympich_ver}
 module load cray-pals/${craypals_ver}
