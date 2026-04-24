@@ -7,11 +7,12 @@ module load PrgEnv-intel/${PrgEnvintel_ver}
 module load intel/${intel_ver}
 module load gsl/${gsl_ver}
 module load netcdf/${netcdf_ver}
+module load proj/${proj_ver}
 module load cray-pals/${craypals_ver}
+module use /apps/ops/para/nco/modulefiles/core/
 module load prod_util/${prod_util_ver}
 module load cfp/${cfp_ver}
 module load libjpeg/${libjpeg_ver}
-module load libjpeg-turbo/2.1.0
 module load libpng/${libpng_ver}
 module load zlib/${zlib_ver}
 module load jasper/${jasper_ver}
