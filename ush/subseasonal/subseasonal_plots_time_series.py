@@ -315,7 +315,8 @@ class TimeSeries:
         # Identify columns that are strictly numbers
         # Assuming 'TOTAL' and everything after it in your list is a number:
         #met_version_line_type_col_list = sub_util.get_met_line_type_cols(
-            #logger, met_info_dict['root'], met_info_dict['version'], line_type
+            #self.logger, self.met_info_dict['root'],
+            #self.met_info_dict['version'], self.plot_info_dict['line_type']
         #)
         #float_idx = met_version_line_type_col_list.index('TOTAL')
         #numeric_cols = met_version_line_type_col_list[float_idx:]

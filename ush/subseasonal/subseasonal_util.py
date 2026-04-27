@@ -4895,7 +4895,7 @@ def build_df(logger, input_dir, output_dir, model_info_dict,
                 logger.debug(f"Could not create {parsed_model_stat_file}")
         model_num_df = pd.DataFrame(np.nan, index=model_num_df_index,
                                     columns=met_version_line_type_col_list)
-        # Python 3.12 testing
+        # Python 3.12 FutureWarning fix
         #model_num_df = pd.DataFrame(np.nan, index=model_num_df_index,
                                     #columns=met_version_line_type_col_list, dtype=object)
         if read_parse_stat_file:
@@ -5030,7 +5030,7 @@ def calculate_stat(logger, data_df, line_type, stat):
            stat_array    - array of the statistic
    """
    # Try to convert everything to numeric, strings will be kept as NaN/Objects
-   #data_df = data_df.apply(pd.to_numeric, errors='ignore')
+   #data_df = data_df.apply(pd.to_numeric, errors='coerce')
    if line_type == 'SL1L2': 
        FBAR = data_df.loc[:]['FBAR']
        OBAR = data_df.loc[:]['OBAR']

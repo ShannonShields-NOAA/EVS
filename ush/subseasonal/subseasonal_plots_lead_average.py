@@ -151,6 +151,18 @@ class LeadAverage:
             model_idx_list = (
                 stat_df.index.get_level_values(0).unique().tolist()
             )
+            # Identify columns that are strictly numbers
+            # Assuming 'TOTAL' and everything after it in your list is a number:
+            #met_version_line_type_col_list = sub_util.get_met_line_type_cols(
+                #self.logger, self.met_info_dict['root'],
+                #self.met_info_dict['version'], self.plot_info_dict['line_type']
+            #)
+            #float_idx = met_version_line_type_col_list.index('TOTAL')
+            #numeric_cols = met_version_line_type_col_list[float_idx:]
+            # Convert only those specific columns
+            #for col in numeric_cols:
+                #if col in all_model_df.columns:
+                    #all_model_df[col] = pd.to_numeric(all_model_df[col], errors='coerce')
             if self.plot_info_dict['event_equalization'] == 'YES':
                 self.logger.debug("Doing event equalization")
                 masked_stat_array = np.ma.masked_invalid(stat_array)
