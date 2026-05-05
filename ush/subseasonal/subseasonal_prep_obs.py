@@ -216,11 +216,11 @@ for OBS in OBSNAME:
                         # This sets the reference time to a specific string
                         cmd = [
                             "wgrib2", daily_prod_file,
-                            "-set_date", CDATE_dt,
+                            "-set_date", CDATE_dt.strftime('%Y%m%d%H'),
                             "-grib", seaice_tmp_file
                         ]
                         subprocess.run(cmd)
-                        copy_file(seaice_tmp_file, daily_arch_file)
+                        sub_util.copy_file(seaice_tmp_file, daily_arch_file)
                     else:
                         sub_util.log_missing_file_obs(log_missing_file,
                                                       daily_prod_file,
