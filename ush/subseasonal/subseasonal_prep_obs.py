@@ -11,6 +11,7 @@ import os
 import datetime
 import glob
 import shutil
+import subprocess
 import subseasonal_util as sub_util
 import sys
 
@@ -23,11 +24,11 @@ print("Working in: "+cwd)
 DATA = os.environ['DATA']
 COMINgfs = os.environ['COMINgfs']
 DCOMINecmwf = os.environ['DCOMINecmwf']
-DCOMINosi = os.environ['DCOMINosi']
 DCOMINghrsst = os.environ['DCOMINghrsst']
 DCOMINumd = os.environ['DCOMINumd']
 COMINobsproc = os.environ['COMINobsproc']
 COMINccpa = os.environ['COMINccpa']
+COMINseaice = os.environ['COMINseaice']
 COMOUT = os.environ['COMOUT']
 SENDCOM = os.environ['SENDCOM']
 INITDATE = os.environ['INITDATE']
@@ -45,7 +46,6 @@ if not os.path.exists(COMOUT_INITDATE):
 
 ###### OBS
 # Get operational observation data
-# Northern & Southern Hemisphere 10 km OSI-SAF multi-sensor analysis - osi_saf
 # Group for High Resolution Sea Surface Temperature (GHRSST) Level 4 SST analysis for Office of Satellite and Product Operations (OSPO) - ghrsst_ospo
 # NCEP's Climatology-Calibrated Precipitation Analysis - ccpa
 subseasonal_obs_dict = {
@@ -70,23 +70,18 @@ subseasonal_obs_dict = {
                                                        +'{init?fmt=%Y%m%d%H}'
                                                        +'.anl'),
                       'vhours': ['00', '12']},
-    'osi': {'daily_prod_file_format': os.path.join(DCOMINosi,
-                                                   '{init_shift?fmt=%Y%m%d'
-                                                   +'?shift=-12}',
-                                                   'seaice', 'osisaf',
-                                                   'ice_conc_{hem?fmt=str}_'
-                                                   +'polstere-100_multi_'
-                                                   +'{init_shift?fmt=%Y%m%d%H'
-                                                   +'?shift=-12}'
-                                                   +'00.nc'),
+    'seaice': {'daily_prod_file_format': os.path.join(COMINseaice,
+                                                      'seaice_analysis.'
+                                                      +'{init?fmt=%Y%m%d}',
+                                                      'seaice.t00z.grb.grib2'),
                 'daily_arch_file_format': os.path.join(COMOUT_INITDATE,
-                                                       'osi_saf',
-                                                       'osi_saf.multi.'
+                                                       'seaice_anl',
+                                                       'seaice.'
                                                        +'{init_shift?fmt=%Y%m%d%H'
                                                        +'?shift=-24}to'
                                                        +'{init?fmt=%Y%m%d%H}'
-                                                       +'_G003.nc'),
-                'vhours': ['00']},
+                                                       +'.grib2'),
+                'vhours': ['12']},
     'ghrsst': {'daily_prod_file_format': os.path.join(DCOMINghrsst,
                                                       '{init_shift?fmt=%Y%m%d'
                                                       +'?shift=-24}',
@@ -191,7 +186,7 @@ for OBS in OBSNAME:
                         prod_file, arch_file, CDATE_dt,
                         log_missing_file
                     )
-        elif OBS == 'osi':
+        elif OBS == 'seaice':
             daily_prod_file = sub_util.format_filler(
                 obs_dict['daily_prod_file_format'], CDATE_dt, CDATE_dt,
                 'anl', {}
@@ -201,10 +196,10 @@ for OBS in OBSNAME:
                 'anl', {}
             )
             daily_COMOUT_file = os.path.join(
-                COMOUT_INITDATE, 'osi_saf', daily_arch_file.rpartition('/')[2]
+                COMOUT_INITDATE, 'seaice_anl', daily_arch_file.rpartition('/')[2]
             )
             daily_COMOUT_file_format = os.path.join(
-                COMOUT+'.{init?fmt=%Y%m%d}', 'osi_saf',
+                COMOUT+'.{init?fmt=%Y%m%d}', 'seaice_anl',
                 obs_dict['daily_arch_file_format'].rpartition('/')[2]
             )
             if not os.path.exists(daily_COMOUT_file) \
@@ -214,10 +209,23 @@ for OBS in OBSNAME:
                     os.makedirs(arch_file_dir)
                 print("----> Trying to create "+daily_arch_file)
                 if SENDCOM == 'YES':
-                    sub_util.prep_prod_osi_saf_file(
-                        daily_prod_file, daily_arch_file,
-                        CDATE_dt, log_missing_file
-                    )
+                    if sub_util.check_file_exists_size(daily_prod_file):
+                        seaice_tmp_file = os.path.join(
+                            DATA, STEP, 'seaice.t12z.grb.grib2'
+                        )
+                        # This sets the reference time to a specific string
+                        cmd = [
+                            "wgrib2", daily_prod_file,
+                            "-set_date", CDATE_dt,
+                            "-grib", seaice_tmp_file
+                        ]
+                        subprocess.run(cmd)
+                        copy_file(seaice_tmp_file, daily_arch_file)
+                    else:
+                        sub_util.log_missing_file_obs(log_missing_file,
+                                                      daily_prod_file,
+                                                      "Sea Ice Analysis",
+                                                      CDATE_dt)
         elif OBS == 'ghrsst':
             daily_prod_file = sub_util.format_filler(
                 obs_dict['daily_prod_file_format'], CDATE_dt, CDATE_dt,
