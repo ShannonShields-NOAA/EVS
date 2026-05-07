@@ -11,7 +11,6 @@ import os
 import datetime
 import glob
 import shutil
-import subprocess
 import subseasonal_util as sub_util
 import sys
 
@@ -209,23 +208,10 @@ for OBS in OBSNAME:
                     os.makedirs(arch_file_dir)
                 print("----> Trying to create "+daily_arch_file)
                 if SENDCOM == 'YES':
-                    if sub_util.check_file_exists_size(daily_prod_file):
-                        seaice_tmp_file = os.path.join(
-                            DATA, STEP, 'seaice.t12z.grb.grib2'
-                        )
-                        # This sets the reference time to a specific string
-                        cmd = [
-                            "wgrib2", daily_prod_file,
-                            "-set_date", CDATE_dt.strftime('%Y%m%d%H'),
-                            "-grib", seaice_tmp_file
-                        ]
-                        subprocess.run(cmd)
-                        sub_util.copy_file(seaice_tmp_file, daily_arch_file)
-                    else:
-                        sub_util.log_missing_file_obs(log_missing_file,
-                                                      daily_prod_file,
-                                                      "Sea Ice Analysis",
-                                                      CDATE_dt)
+                    sub_util.prep_prod_seaice_anl_file(
+                        daily_prod_file, daily_arch_file,
+                        CDATE_dt, log_missing_file
+                    )
         elif OBS == 'ghrsst':
             daily_prod_file = sub_util.format_filler(
                 obs_dict['daily_prod_file_format'], CDATE_dt, CDATE_dt,
