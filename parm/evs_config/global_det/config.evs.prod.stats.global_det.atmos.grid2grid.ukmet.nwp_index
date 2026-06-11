@@ -1,0 +1,63 @@
+#!/bin/bash
+##---------------------------------------------------------------------------
+##---------------------------------------------------------------------------
+## NCEP EMC Verification System (EVS) - UKMET Atmospheric
+##
+## CONTRIBUTORS: Shannon Shields, shannon.shields@noaa.gov, NOAA/NWS/NCEP/EMC-VPPPGB
+## PURPOSE: Set up configurations to run EVS UKMET Atmospheric NWP Index
+##---------------------------------------------------------------------------
+##--------------------------------------------------------------------------
+
+set -x
+
+echo "BEGIN: $(basename ${BASH_SOURCE[0]})"
+
+####################################################
+# WHAT METPLUS USE CASES TO RUN FOR GFS ATMOSPHERIC
+####################################################
+## SET TO "YES" or "NO"
+## EDIT SECTIONS BELOW FOR VERIFICATION TYPES REQUESTED
+export RUN_GRID2GRID_NWP_INDEX="YES"
+export RUN_GRID2GRID_STATS="NO"
+export RUN_GRID2GRID_PLOTS="NO"
+export RUN_GRID2OBS_STATS="NO"
+export RUN_GRID2OBS_PLOTS="NO"
+
+####################################################
+# GENERAL SETTINGS APPLIED TO ALL USE CASES
+####################################################
+## INPUT DATA SETTINGS
+#model_list:             model names
+#model_evs_data_dir_list:    directory path to model .stat files
+#model_file_format_list: file format of model files
+export model_list="$MODELNAME"
+export model_evs_data_dir_list="$COMOUTfinal"
+export model_file_format_list="$COMIN/prep/$COMPONENT/${RUN}.{init?fmt=%Y%m%d}/${MODELNAME}/${MODELNAME}.t{init?fmt=%H}z.f{lead?fmt=%3H}"
+
+## OUTPUT DATA SETTINGS
+#OUTPUTROOT: base output directory
+export OUTPUTROOT="$DATAROOT"
+## DATE SETTINGS
+#start_date:       verification start date, format YYYYMMDD
+#end_date:         verification end date, format YYYYMMDD
+export start_date=$VDATE
+export end_date=$VDATE
+####################################################
+# SETTINGS FOR SPECIFIC USE CASES
+####################################################
+if [ $RUN_GRID2GRID_NWP_INDEX = YES ]; then
+    #g2gs_type_list: list type of verifications to run for grid-to-grid: nwp
+    #    nwp:        calculate NWP Index
+    #g2gs_nwp_valid_hr_list: list of valid hours to be included in verification: HH
+    #For defining forecast hours:
+    #    g2gs_nwp_fhr_min: forecast hour to start verification: HH[H]
+    #    g2gs_nwp_fhr_max: forecast hour to end verification: HH[H]
+    #    g2gs_nwp_fhr_inc: frequency to verify forecast hours: HH[H]
+    export g2gs_type_list="nwp"
+    export g2gs_nwp_valid_hr_list="00 12"
+    export g2gs_nwp_fhr_min=24
+    export g2gs_nwp_fhr_max=120
+    export g2gs_nwp_fhr_inc=24
+fi
+
+echo "END: $(basename ${BASH_SOURCE[0]})"
