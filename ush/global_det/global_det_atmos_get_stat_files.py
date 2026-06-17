@@ -143,16 +143,6 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                               +dest_model_date_stat_file)
                         os.symlink(source_model_date_stat_file,
                                    dest_model_date_stat_file)
-                        org_file = dest_model_date_stat_file
-                        rev_file = os.path.join(
-                            VERIF_CASE_STEP_data_dir, model,
-                            'revised_gfsv17_v'+date_dt.strftime('%Y%m%d')+'.stat'
-                        )
-                        # This replicates sed command
-                        with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
-                            for line in f_in:
-                                f_out.write(line.replace('gfs', 'gfsv17'))
-                        print("Done! "+rev_file+" has been created.")
                 if not os.path.exists(dest_model_ref_date_stat_file):
                     if gda_util.check_file_exists_size(
                             source_model_ref_date_stat_file
@@ -161,6 +151,16 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                               +dest_model_ref_date_stat_file)
                         os.symlink(source_model_ref_date_stat_file,
                                    dest_model_ref_date_stat_file)
+                        org_file = dest_model_ref_date_stat_file
+                        rev_file = os.path.join(
+                            VERIF_CASE_STEP_data_dir, model,
+                            'revised_'+ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                        )
+                        # This replicates sed command
+                        with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
+                            for line in f_in:
+                                f_out.write(line.replace(model, ref_model))
+                        print("Done! "+rev_file+" has been created.")
                 date_dt = date_dt + datetime.timedelta(days=1)
 elif VERIF_CASE_STEP == 'grid2obs_stats':
     # Read in VERIF_CASE_STEP related environment variables
