@@ -85,6 +85,11 @@ if JOB_GROUP == 'calc_nwp_index':
         job_env_dict['DATE'] = date_dt.strftime('%Y%m%d')
         for model_idx in range(len(model_list)):
             model = model_list[model_idx]
+            job_env_dict['MODEL_ANL'] = model+'_anl'
+            job_env_dict['REFERENCE_ANL'] = ref_model+'_anl'
+            if model == 'cfs':
+                job_env_dict['MODEL_ANL'] = 'gfs_anl'
+                job_env_dict['REFERENCE_ANL'] = 'gfs_pers_anl'
             job_env_dict['MODEL'] = model_list[model_idx]
             job_env_dict['REFERENCE'] = ref_model
             job_env_dict['MODEL_EVS_DATA_DIR'] = (

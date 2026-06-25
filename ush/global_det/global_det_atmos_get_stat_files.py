@@ -159,7 +159,10 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         # This replicates sed command
                         with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
                             for line in f_in:
-                                f_out.write(line.replace(model, ref_model))
+                                modified_line = line.replace(model, ref_model)
+                                if model == 'cfs':
+                                    modified_line = modified_line.replace("gfs", "gfs_pers")
+                                f_out.write(modified_line)
                         print("Done! "+rev_file+" has been created.")
                 date_dt = date_dt + datetime.timedelta(days=1)
 elif VERIF_CASE_STEP == 'grid2obs_stats':
