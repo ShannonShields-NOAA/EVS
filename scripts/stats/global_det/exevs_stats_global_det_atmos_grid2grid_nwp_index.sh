@@ -54,8 +54,11 @@ done
 
 # Copy stat files to desired location
 if [ $SENDCOM = YES ]; then
-    stat_file=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/evs.stats.$MODEL.$RUN.$VERIF_CASE.nwpindex.v$VDATE.stat
-    if [ -s $stat_file ]; then
-        cp -v $stat_file $COMOUT/$MODEL.$VDATE/.
-    fi
+    #stat_file=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/evs.stats.$MODEL.$RUN.$VERIF_CASE.nwpindex.v$VDATE.stat
+    nwp_index_stat_files=$DATA/${VERIF_CASE}_${STEP}/METplus_output/atmos.$VDATE/$MODEL/$VERIF_CASE/*
+    for stat_file in $nwp_index_stat_files; do
+        if [ -s "$stat_file" ]; then
+            cp -v "$stat_file" $COMOUT/$MODEL.$VDATE/.
+        fi
+    done
 fi
