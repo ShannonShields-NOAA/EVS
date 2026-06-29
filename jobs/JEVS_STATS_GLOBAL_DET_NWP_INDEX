@@ -45,7 +45,7 @@ export vhr=${vhr:-00}
 export cycle=${cycle:-t${vhr}z}
 setpdy.sh
 . ./PDY
-export VDATE=${VDATE:-$PDYm1}
+export VDATE=${VDATE:-$PDYm2}
 
 ####################################
 # Set data directives
