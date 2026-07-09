@@ -321,36 +321,43 @@ elif STEP == 'plots':
     end_date_dt = datetime.datetime.strptime(end_date, '%Y%m%d')
     VERIF_CASE_STEP_data_dir = os.path.join(DATA, VERIF_CASE_STEP, 'data')
     date_type = 'VALID'
-    for model_idx in range(len(model_list)):
-        model = model_list[model_idx]
-        model_evs_data_dir = model_evs_data_dir_list[model_idx]
-        date_dt = start_date_dt
-        while date_dt <= end_date_dt:
-            if date_type == 'VALID':
-                if evs_run_mode == 'production':
-                    source_model_date_stat_file = os.path.join(
-                        model_evs_data_dir+'.'+date_dt.strftime('%Y%m%d'),
-                        'evs.stats.'+model+'vsgfsv16.'+RUN+'.'+VERIF_CASE+'.'
-                        +'nwpindex.v'+date_dt.strftime('%Y%m%d')+'.stat'
-                    )
-                else:
-                    source_model_date_stat_file = os.path.join(
-                        model_evs_data_dir, 'evs_data',
-                        COMPONENT, RUN, VERIF_CASE, model,
-                        model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
-                    )
-                dest_model_date_stat_file = os.path.join(
-                    VERIF_CASE_STEP_data_dir, model,
-                    model+'_nwpindex_v'+date_dt.strftime('%Y%m%d')+'.stat'
-                )
-            if not os.path.exists(dest_model_date_stat_file):
-                if gda_util.check_file_exists_size(
-                        source_model_date_stat_file
-                ):
-                    print("Linking "+source_model_date_stat_file+" to "
-                          +dest_model_date_stat_file)
-                    os.symlink(source_model_date_stat_file,
-                               dest_model_date_stat_file)
-            date_dt = date_dt + datetime.timedelta(days=1)
+    for VERIF_CASE_STEP_type in VERIF_CASE_STEP_type_list:
+        VERIF_CASE_STEP_abbrev_type = (VERIF_CASE_STEP_abbrev+'_'
+                                       +VERIF_CASE_STEP_type)
+        VERIF_CASE_STEP_type_valid_hr_list = os.environ[
+            VERIF_CASE_STEP_abbrev_type+'_valid_hr_list'
+        ].split(' ')
+        for VERIF_CASE_STEP_type_valid_hr in VERIF_CASE_STEP_type_valid_hr_list:
+            for model_idx in range(len(model_list)):
+                model = model_list[model_idx]
+                model_evs_data_dir = model_evs_data_dir_list[model_idx]
+                date_dt = start_date_dt
+                while date_dt <= end_date_dt:
+                    if date_type == 'VALID':
+                        if evs_run_mode == 'production':
+                            source_model_date_stat_file = os.path.join(
+                                model_evs_data_dir+'.'+date_dt.strftime('%Y%m%d'),
+                                'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                                +'nwpindex.v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
+                            )
+                        else:
+                            source_model_date_stat_file = os.path.join(
+                                model_evs_data_dir, 'evs_data',
+                                COMPONENT, RUN, VERIF_CASE, model,
+                                model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                        dest_model_date_stat_file = os.path.join(
+                            VERIF_CASE_STEP_data_dir, model,
+                            model+'_nwpindex_v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
+                        )
+                    if not os.path.exists(dest_model_date_stat_file):
+                        if gda_util.check_file_exists_size(
+                                source_model_date_stat_file
+                        ):
+                            print("Linking "+source_model_date_stat_file+" to "
+                                  +dest_model_date_stat_file)
+                            os.symlink(source_model_date_stat_file,
+                                       dest_model_date_stat_file)
+                    date_dt = date_dt + datetime.timedelta(days=1)
 
 print("END: "+os.path.basename(__file__))
