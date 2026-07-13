@@ -10,6 +10,7 @@ Run By: scripts/stats/global_det/exevs_stats_global_det_atmos_grid2grid_nwp_inde
 import os
 import datetime
 import global_det_atmos_util as gda_util
+import global_det_atmos_nwp_index_util as gda_nwputil
 
 print("BEGIN: "+os.path.basename(__file__))
 
@@ -136,7 +137,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
                     )
                 if not os.path.exists(dest_model_date_stat_file):
-                    if gda_util.check_file_exists_size(
+                    if gda_nwputil.check_stat_file_exists_size(
                             source_model_date_stat_file
                     ):
                         print("Linking "+source_model_date_stat_file+" to "
@@ -144,7 +145,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         os.symlink(source_model_date_stat_file,
                                    dest_model_date_stat_file)
                 if not os.path.exists(dest_model_ref_date_stat_file):
-                    if gda_util.check_file_exists_size(
+                    if gda_nwputil.check_stat_file_exists_size(
                             source_model_ref_date_stat_file
                     ):
                         print("Linking "+source_model_ref_date_stat_file+" to "
@@ -351,7 +352,7 @@ elif STEP == 'plots':
                             model+'_nwpindex_v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
                         )
                     if not os.path.exists(dest_model_date_stat_file):
-                        if gda_util.check_file_exists_size(
+                        if gda_nwputil.check_nwp_index_file_exists_size(
                                 source_model_date_stat_file
                         ):
                             print("Linking "+source_model_date_stat_file+" to "
