@@ -102,26 +102,26 @@ def python_command(python_script_name, script_arg_list):
     return python_cmd
 
 def check_stat_file_exists_size(file_name):
-    """! Checks to see if file exists and has size greater than or equal to 50KB
+    """! Checks to see if file exists and has size greater than 90KB
 
          Args:
              file_name - file path (string)
 
          Returns:
              file_good - boolean
-                       - True: file exists,file size >= 51200 bytes
+                       - True: file exists,file size > 92160 bytes
                        - False: file doesn't exist
-                                OR file size < 51200 bytes
+                                OR file size < 92160 bytes
     """
     if '/com/' in file_name or '/dcom/' in file_name:
         alert_word = 'WARNING'
     else:
         alert_word = 'NOTE'
     if os.path.exists(file_name):
-        if os.path.getsize(file_name) >= 51200:
+        if os.path.getsize(file_name) > 92160:
             file_good = True
         else:
-            print(f"{alert_word}: {file_name} smaller than 50KB")
+            print(f"{alert_word}: {file_name} smaller than 90KB, not full size")
             file_good = False
     else:
         print(f"{alert_word}: {file_name} does not exist")
