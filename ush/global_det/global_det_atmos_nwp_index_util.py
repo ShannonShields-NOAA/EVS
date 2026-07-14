@@ -2761,7 +2761,7 @@ def initalize_job_env_dict(verif_type, group,
             )
             fhr_list = [str(i) for i in fhr_range]
         job_env_dict['fhr_list'] = ', '.join(fhr_list)
-        if verif_type in ['pres_levs', 'means', 'sfc', 'ptype']:
+        if verif_type in ['pres_levs', 'means', 'sfc', 'ptype', 'nwp_index']:
             verif_type_valid_hr_list = (
                 os.environ[verif_case_step_abbrev_type+'_valid_hr_list']\
                 .split(' ')
@@ -3048,7 +3048,8 @@ def get_plot_job_dirs(DATA_base_dir, COMOUT_base_dir, job_group,
         'SPlains': 'buk_spl',
         'SPO': 'spo',
         'SRockies': 'buk_srk',
-        'TROPICS': 'tropics'
+        'TROPICS': 'tropics',
+        'TROPICS,NHEM,SHEM': 'nwp_index_regions'
     }
     dir_step = plot_job_env_dict['STEP'].lower()
     dir_verif_case = plot_job_env_dict['VERIF_CASE'].lower()
