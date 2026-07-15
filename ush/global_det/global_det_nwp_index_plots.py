@@ -15,8 +15,8 @@ import glob
 import itertools
 import shutil
 import global_det_atmos_util as gda_util
-import global_det_nwp_util as gdn_util
-from global_det_atmos_plots_specs import PlotSpecs
+import global_det_atmos_nwp_index_util as gda_nwputil
+from global_det_nwp_index_plots_specs import PlotSpecs
 
 print("BEGIN: "+os.path.basename(__file__))
 
@@ -239,7 +239,7 @@ if JOB_GROUP == 'condense_stats':
                 job_DATA_condensed_model_stat_file
             )
         if not os.path.exists(check_job_condensed_model_stat_file):
-            gdn_util.condense_model_stat_files(
+            gda_nwputil.condense_model_stat_files(
                 logger, stat_base_dir, job_work_dir, model, obs_name, vx_mask,
                 fcst_var_name, fcst_var_level, obs_var_name, obs_var_level,
                 line_type
@@ -382,7 +382,7 @@ elif JOB_GROUP == 'make_plots':
     plot_info_dict = original_plot_info_dict.copy()
     met_info_dict = original_met_info_dict.copy()
     if plot == 'time_series':
-        import global_det_nwp_plots_time_series as gdap_ts
+        import global_det_nwp_index_plots_time_series as gdap_ts
         for ts_info in \
                 list(itertools.product(valid_hrs, fhrs, var_info)):
             date_info_dict['valid_hr_start'] = str(ts_info[0])

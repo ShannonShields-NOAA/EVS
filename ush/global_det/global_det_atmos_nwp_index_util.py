@@ -3192,9 +3192,9 @@ def condense_model_stat_files(logger, input_dir, output_dir, model, obs,
             all_grep_output = ''
             for model_stat_file in model_stat_files:
                 logger.info(f"Grep'ing {model_stat_file} for "
-                            +f"{model}, {', '.join(additional_grep_list)}")
+                            +f"{model}")
                 grep = subprocess.run(
-                    'grep -R "'+model+' " '+model_stat_file+additional_grep,
+                    'grep -R "'+model+' " '+model_stat_file,
                     shell=True, capture_output=True, encoding="utf8"
                 )
                 logger.debug(f"Ran {grep.args}")
