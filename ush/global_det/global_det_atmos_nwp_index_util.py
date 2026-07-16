@@ -2701,8 +2701,8 @@ def get_off_machine_data(job_file, job_name, job_output, machine, user, queue,
             break
         sleep_counter+=1
 
-def initalize_job_env_dict(verif_type, group,
-                           verif_case_step_abbrev_type, job):
+def initialize_job_env_dict(verif_type, group,
+                            verif_case_step_abbrev_type, job):
     """! This initializes a dictionary of environment variables and their
          values to be set for the job pulling from environment variables
          already set previously
