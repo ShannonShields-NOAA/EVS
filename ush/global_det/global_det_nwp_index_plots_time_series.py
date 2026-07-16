@@ -156,11 +156,13 @@ class TimeSeries:
                 +f"{self.plot_info_dict['vx_mask'].lower()}.stat"
             )
             if os.path.exists(nwp_stat):
+                self.logger.debug(f"Reading {model_num}")
                 self.logger.info(f"Reading {nwp_stat}")
                 df = pd.read_csv(nwp_stat, sep='\s+')
                 df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
                 df = df.sort_values('FCST_VALID_BEG')
                 df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
+                self.logger.debug(f"Created dataframe: {df}")
             else:
                 self.logger.debug(f"{nwp_stat} does not exist")
         #all_model_df = gda_util.build_df(
@@ -322,24 +324,28 @@ class TimeSeries:
         model_idx_list = (
             df.index.get_level_values(0).unique().tolist()
         )
+        self.logger.debug(f"Model idx list: {model_idx_list}")
         obs_plotted = False
         for model_idx in model_idx_list:
-            model_num = model_idx.split('/')[0]
-            #model_num = 'model1'
-            model_num_name = model_idx.split(',')[0]
-            model_num_plot_name = self.model_info_dict[model_num]['plot_name']
-            model_num_obs_name = self.model_info_dict[model_num]['obs_name']
-            model_num_data = df.loc[model_idx]
-            self.logger.debug(f"Plotting {model_num} [{model_num_name},"
-                              +f"{model_num_plot_name}]")
-            if model_num_name in list(model_plot_settings_dict.keys()):
-                model_num_plot_settings_dict = (
-                    model_plot_settings_dict[model_num_name]
-                )
-            else:
-                model_num_plot_settings_dict = (
-                    model_plot_settings_dict[model_num]
-                )
+            for model_num in list(self.model_info_dict.keys()):
+                self.logger.debug(f"Model number: {model_num}")
+                #model_num = model_idx.split('/')[0]
+                #model_num = 'model1'
+                model_num_name = model_idx.split(',')[0]
+                self.logger.debug(f"Model number name: {model_num_name}")
+                model_num_plot_name = self.model_info_dict[model_num]['plot_name']
+                model_num_obs_name = self.model_info_dict[model_num]['obs_name']
+                model_num_data = df.loc[model_idx]
+                self.logger.debug(f"Plotting {model_num} [{model_num_name},"
+                                  +f"{model_num_plot_name}]")
+                if model_num_name in list(model_plot_settings_dict.keys()):
+                    model_num_plot_settings_dict = (
+                        model_plot_settings_dict[model_num_name]
+                    )
+                else:
+                    model_num_plot_settings_dict = (
+                        model_plot_settings_dict[model_num]
+                    )
             # Select only the SS_INDEX column before masking
             masked_model_num_data = np.ma.masked_invalid(model_num_data['SS_INDEX'])
             self.logger.debug(f"SS Index Data: {masked_model_num_data}")
