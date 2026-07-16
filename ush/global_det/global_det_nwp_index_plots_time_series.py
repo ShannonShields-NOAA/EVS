@@ -155,6 +155,7 @@ class TimeSeries:
                 +f"{self.plot_info_dict['fcst_var_level'].lower().replace('.','p').replace('-', '_')}_"
                 +f"{self.plot_info_dict['vx_mask'].lower()}.stat"
             )
+            self.logger.info(f"Reading {nwp_stat}")
             df = pd.read_csv(nwp_stat, sep='\s+')
             df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
             df = df.sort_values('FCST_VALID_BEG')
@@ -237,7 +238,7 @@ class TimeSeries:
         date_intvl = int((plot_dates[1]-plot_dates[0]).total_seconds())
         stat_min = np.ma.masked_invalid(np.nan)
         stat_max = np.ma.masked_invalid(np.nan)
-        stat_plot_name = 'Skill Score Index'
+        stat_plot_name = 'NWP Index'
         fcst_units = df['FCST_UNITS'].values.astype('str').tolist()
         fcst_units = np.unique(fcst_units)
         fcst_units = np.delete(fcst_units, np.where(fcst_units == 'nan'))
@@ -320,7 +321,8 @@ class TimeSeries:
         )
         obs_plotted = False
         for model_idx in model_idx_list:
-            model_num = 'model1'
+            model_num = model_idx.split('/')[0]
+            #model_num = 'model1'
             model_num_name = model_idx.split(',')[0]
             model_num_plot_name = self.model_info_dict[model_num]['plot_name']
             model_num_obs_name = self.model_info_dict[model_num]['obs_name']
@@ -409,31 +411,31 @@ class TimeSeries:
                             round(obar_model_num_avg, 3), '.3f'
                         )
                 # Set plot without markers for full period
-                ax.plot_date(
-                    np.ma.compressed(masked_plot_dates),
-                    np.ma.compressed(masked_model_num_data),
-                    marker=None,
-                    color = model_num_plot_settings_dict['color'],
-                    linestyle = model_num_plot_settings_dict['linestyle'],
-                    linewidth = model_num_plot_settings_dict['linewidth'],
-                    label = ('Skill Score Index '+model_num_avg_label+' '
-                             +str(model_num_npts)+' days'),
-                    zorder = (len(list(self.model_info_dict.keys()))
-                              - model_idx_list.index(model_idx) + 4)
-                )
                 #ax.plot_date(
                     #np.ma.compressed(masked_plot_dates),
                     #np.ma.compressed(masked_model_num_data),
-                    #fmt=model_num_plot_settings_dict['marker'],
+                    #marker=None,
                     #color = model_num_plot_settings_dict['color'],
                     #linestyle = model_num_plot_settings_dict['linestyle'],
                     #linewidth = model_num_plot_settings_dict['linewidth'],
-                    #markersize = model_num_plot_settings_dict['markersize'],
                     #label = ('Skill Score Index '+model_num_avg_label+' '
                              #+str(model_num_npts)+' days'),
                     #zorder = (len(list(self.model_info_dict.keys()))
                               #- model_idx_list.index(model_idx) + 4)
                 #)
+                ax.plot_date(
+                    np.ma.compressed(masked_plot_dates),
+                    np.ma.compressed(masked_model_num_data),
+                    fmt=model_num_plot_settings_dict['marker'],
+                    color = model_num_plot_settings_dict['color'],
+                    linestyle = model_num_plot_settings_dict['linestyle'],
+                    linewidth = model_num_plot_settings_dict['linewidth'],
+                    markersize = model_num_plot_settings_dict['markersize'],
+                    label = (model_num_plot_name+' '+model_num_avg_label+' '
+                             +str(model_num_npts)+' days'),
+                    zorder = (len(list(self.model_info_dict.keys()))
+                              - model_idx_list.index(model_idx) + 4)
+                )
                 if masked_model_num_data.min() < stat_min \
                         or np.ma.is_masked(stat_min):
                     stat_min = masked_model_num_data.min()
@@ -475,12 +477,12 @@ class TimeSeries:
             else:
                 self.logger.debug(f"{model_num} [{model_num_name},"
                                   +f"{model_num_plot_name}] has no points")
-        preset_y_axis_tick_min = 0.5
-        preset_y_axis_tick_max = 1.5
-        preset_y_axis_tick_inc = 0.25
-        #preset_y_axis_tick_min = ax.get_yticks()[0]
-        #preset_y_axis_tick_max = ax.get_yticks()[-1]
-        #preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
+        #preset_y_axis_tick_min = 0.5
+        #preset_y_axis_tick_max = 1.5
+        #preset_y_axis_tick_inc = 0.25
+        preset_y_axis_tick_min = ax.get_yticks()[0]
+        preset_y_axis_tick_max = ax.get_yticks()[-1]
+        preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
         if self.plot_info_dict['stat'] in ['ACC']:
             y_axis_tick_inc = 0.1
         elif self.plot_info_dict['stat'] in ['FBIAS'] \

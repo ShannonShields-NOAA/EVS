@@ -96,7 +96,7 @@ if [ $SENDCOM = YES ]; then
     # Make and copy tar file
     cd ${VERIF_CASE}_${STEP}/plot_output/tar_files
     for VERIF_TYPE in $g2gp_type_list; do
-        large_tar_file=${DATA}/${VERIF_CASE}_${STEP}/plot_output/evs.plots.${COMPONENT}.${RUN}.${VERIF_CASE}_${VERIF_TYPE}.last${NDAYS}days.v${end_date}.tar
+        large_tar_file=${DATA}/${VERIF_CASE}_${STEP}/plot_output/evs.plots.${COMPONENT}.${RUN}.${VERIF_CASE}_${VERIF_TYPE}.last${NDAYS}days.v${end_date}${vhr}.tar
         tar_file_count=$(find ${DATA}/${VERIF_CASE}_${STEP}/plot_output/tar_files -type f 2>/dev/null |wc -l)
         if [[ $tar_file_count -ne 0 ]]; then
             tar -cvf $large_tar_file *.tar
