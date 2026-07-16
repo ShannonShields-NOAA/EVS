@@ -155,11 +155,14 @@ class TimeSeries:
                 +f"{self.plot_info_dict['fcst_var_level'].lower().replace('.','p').replace('-', '_')}_"
                 +f"{self.plot_info_dict['vx_mask'].lower()}.stat"
             )
-            self.logger.info(f"Reading {nwp_stat}")
-            df = pd.read_csv(nwp_stat, sep='\s+')
-            df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
-            df = df.sort_values('FCST_VALID_BEG')
-            df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
+            if os.path.exists(nwp_stat):
+                self.logger.info(f"Reading {nwp_stat}")
+                df = pd.read_csv(nwp_stat, sep='\s+')
+                df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
+                df = df.sort_values('FCST_VALID_BEG')
+                df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
+            else:
+                self.logger.debug(f"{nwp_stat} does not exist")
         #all_model_df = gda_util.build_df(
             #'make_plots', self.logger, self.input_dir, self.output_dir,
             #self.model_info_dict, self.met_info_dict,
