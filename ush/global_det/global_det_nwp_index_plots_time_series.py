@@ -162,7 +162,11 @@ class TimeSeries:
                 df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
                 df = df.sort_values('FCST_VALID_BEG')
                 df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
-                self.logger.debug(f"Created dataframe: {df}")
+                if model_num == 'model1':
+                    all_model_df = df
+                else:
+                    all_model_df = pd.concat([all_model_df, df])
+                self.logger.debug(f"Created dataframe: {all_model_df}")
             else:
                 self.logger.debug(f"{nwp_stat} does not exist")
         #all_model_df = gda_util.build_df(
@@ -322,7 +326,7 @@ class TimeSeries:
             )
         model_plot_settings_dict = plot_specs_ts.get_model_plot_settings()
         model_idx_list = (
-            df.index.get_level_values(0).unique().tolist()
+            all_model_df.index.get_level_values(0).unique().tolist()
         )
         self.logger.debug(f"Model idx list: {model_idx_list}")
         obs_plotted = False
@@ -335,7 +339,7 @@ class TimeSeries:
                 self.logger.debug(f"Model number name: {model_num_name}")
                 model_num_plot_name = self.model_info_dict[model_num]['plot_name']
                 model_num_obs_name = self.model_info_dict[model_num]['obs_name']
-                model_num_data = df.loc[model_idx]
+                model_num_data = all_model_df.loc[model_idx]
                 self.logger.debug(f"Plotting {model_num} [{model_num_name},"
                                   +f"{model_num_plot_name}]")
                 if model_num_name in list(model_plot_settings_dict.keys()):
