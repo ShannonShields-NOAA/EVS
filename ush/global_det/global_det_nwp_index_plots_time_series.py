@@ -159,6 +159,9 @@ class TimeSeries:
                 self.logger.debug(f"Reading {model_num}")
                 self.logger.info(f"Reading {nwp_stat}")
                 df = pd.read_csv(nwp_stat, sep='\s+')
+                # Filter using exact string matching
+                df = df[df['FCST_VALID_BEG'].isin(format_valid_dates)]
+                # Then convert to datetime
                 df['FCST_VALID_BEG'] = pd.to_datetime(df['FCST_VALID_BEG'], format='%Y%m%d_%H%M%S')
                 df = df.sort_values('FCST_VALID_BEG')
                 df = df.set_index(['MODEL', 'FCST_VALID_BEG'])
