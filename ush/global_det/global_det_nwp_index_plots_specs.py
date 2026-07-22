@@ -719,7 +719,7 @@ class PlotSpecs:
             plot_title = (plot_title+' '
                           +'Neighborhood Pts: '
                           +plot_info_dict['interp_points'])
-        plot_title = (plot_title+' - '
+        plot_title = (plot_title+' '
                       +'Validation: Model\'s Own Analysis')
         plot_title = (plot_title+'\n'
                       +self.get_dates_plot_name(date_info_dict['date_type'],
