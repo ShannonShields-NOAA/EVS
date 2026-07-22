@@ -4028,6 +4028,6 @@ def calculate_average(logger, average_method, line_type, stat, df):
             )
             average_value = avg_array[0]
     else:
-        logger.warning(f"{average_method} not recongnized..."
+        logger.warning(f"{average_method} not recognized..."
                        +"use mean, or aggregation...returning NaN")
     return average_value

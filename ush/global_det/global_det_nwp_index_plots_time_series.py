@@ -172,41 +172,6 @@ class TimeSeries:
                 self.logger.debug(f"Created dataframe: {all_model_df}")
             else:
                 self.logger.debug(f"{nwp_stat} does not exist")
-        #all_model_df = gda_util.build_df(
-            #'make_plots', self.logger, self.input_dir, self.output_dir,
-            #self.model_info_dict, self.met_info_dict,
-            #self.plot_info_dict['fcst_var_name'],
-            #self.plot_info_dict['fcst_var_level'],
-            #self.plot_info_dict['fcst_var_thresh'],
-            #self.plot_info_dict['obs_var_name'],
-            #self.plot_info_dict['obs_var_level'],
-            #self.plot_info_dict['obs_var_thresh'],
-            #self.plot_info_dict['line_type'],
-            #self.plot_info_dict['grid'],
-            #self.plot_info_dict['vx_mask'],
-            #self.plot_info_dict['interp_method'],
-            #self.plot_info_dict['interp_points'],
-            #self.date_info_dict['date_type'],
-            #plot_dates, format_valid_dates,
-            #str(self.date_info_dict['forecast_hour'])
-        #)
-        # Calculate statistic
-        #self.logger.info(f"Calculating statistic {self.plot_info_dict['stat']} "
-                         #+f"from line type {self.plot_info_dict['line_type']}")
-        #if self.plot_info_dict['stat'] == 'FBAR_OBAR':
-            #stat_df, stat_array = gda_util.calculate_stat(
-                #self.logger, all_model_df, self.plot_info_dict['line_type'],
-                #'FBAR'
-            #)
-            #obar_stat_df, obar_stat_array = gda_util.calculate_stat(
-                #self.logger, all_model_df, self.plot_info_dict['line_type'],
-                #'OBAR'
-            #)
-        #else:
-            #stat_df, stat_array = gda_util.calculate_stat(
-                #self.logger, all_model_df, self.plot_info_dict['line_type'],
-                #self.plot_info_dict['stat']
-            #)
         if self.plot_info_dict['event_equalization'] == 'YES':
             self.logger.info("Doing event equalization")
             masked_stat_array = np.ma.masked_invalid(stat_array)
@@ -337,7 +302,6 @@ class TimeSeries:
             model_num_name = model_idx.split(',')[0]
             self.logger.debug(f"Model number name: {model_num_name}")
             model_num_plot_name = model_idx.split(',')[0]
-            #model_num_obs_name = self.model_info_dict[model_num]['obs_name']
             model_num_data = all_model_df.loc[model_idx]
             self.logger.debug(f"Plotting [{model_num_name},"
                               +f"{model_num_plot_name}]")
@@ -418,19 +382,6 @@ class TimeSeries:
                         obar_model_num_avg_label = format(
                             round(obar_model_num_avg, 3), '.3f'
                         )
-                # Set plot without markers for full period
-                #ax.plot_date(
-                    #np.ma.compressed(masked_plot_dates),
-                    #np.ma.compressed(masked_model_num_data),
-                    #marker=None,
-                    #color = model_num_plot_settings_dict['color'],
-                    #linestyle = model_num_plot_settings_dict['linestyle'],
-                    #linewidth = model_num_plot_settings_dict['linewidth'],
-                    #label = ('Skill Score Index '+model_num_avg_label+' '
-                             #+str(model_num_npts)+' days'),
-                    #zorder = (len(list(self.model_info_dict.keys()))
-                              #- model_idx_list.index(model_idx) + 4)
-                #)
                 ax.plot_date(
                     np.ma.compressed(masked_plot_dates),
                     np.ma.compressed(masked_model_num_data),
@@ -485,9 +436,6 @@ class TimeSeries:
             else:
                 self.logger.debug(f"{model_num} [{model_num_name},"
                                   +f"{model_num_plot_name}] has no points")
-        #preset_y_axis_tick_min = 0.5
-        #preset_y_axis_tick_max = 1.5
-        #preset_y_axis_tick_inc = 0.25
         preset_y_axis_tick_min = ax.get_yticks()[0]
         preset_y_axis_tick_max = ax.get_yticks()[-1]
         preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
