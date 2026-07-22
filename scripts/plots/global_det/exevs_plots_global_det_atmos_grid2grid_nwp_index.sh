@@ -91,20 +91,25 @@ for group in condense_stats make_plots; do
     fi
 done
 
-# Copy files to desired location
+# Copy png files to desired location
 if [ $SENDCOM = YES ]; then
+    image_dir=$DATA/${VERIF_CASE}_${STEP}/plot_output/job_work_dir/make_plots/job*/*/*/*/*/*/*/*/*.png
+    image_file_count=$(find $image_dir -type f 2>/dev/null |wc -l)
+    if [[ $image_file_count -ne 0 ]]; then
+	for image_file in $image_dir; do
+	    cp $image_file $DATA/${VERIF_CASE}_${STEP}/plot_output/tar_files
+	done
+    fi
     # Make and copy tar file
     cd ${VERIF_CASE}_${STEP}/plot_output/tar_files
-    for VERIF_TYPE in $g2gp_type_list; do
-        large_tar_file=${DATA}/${VERIF_CASE}_${STEP}/plot_output/evs.plots.${COMPONENT}.${RUN}.${VERIF_CASE}_${VERIF_TYPE}.last${NDAYS}days.v${end_date}${vhr}.tar
-        tar_file_count=$(find ${DATA}/${VERIF_CASE}_${STEP}/plot_output/tar_files -type f 2>/dev/null |wc -l)
-        if [[ $tar_file_count -ne 0 ]]; then
-            tar -cvf $large_tar_file *.tar
-        fi
-        if [ -f $large_tar_file ]; then
-           cp -v $large_tar_file $COMOUT/.
-        fi
-    done
+    tar_file=${DATA}/${VERIF_CASE}_${STEP}/plot_output/tar_files/evs.plots.${COMPONENT}.${RUN}.${VERIF_CASE}_${VERIF_TYPE}.last${NDAYS}days.v${end_date}.tar
+    png_file_count=$(find ${DATA}/${VERIF_CASE}_${STEP}/plot_output/tar_files -type f 2>/dev/null |wc -l)
+    if [[ $png_file_count -ne 0 ]]; then
+        tar -cvf $tar_file *.png
+    fi
+    if [ -f $tar_file ]; then
+        cp -v $tar_file $COMOUT/.
+    fi
     cd $DATA
 fi
 
