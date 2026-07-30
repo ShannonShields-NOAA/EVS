@@ -707,8 +707,8 @@ if JOB_GROUP in ['reformat_data', 'assemble_data', 'generate_stats']:
     elif JOB_GROUP == 'generate_stats':
         JOB_GROUP_jobs_dict = generate_stats_jobs_dict
     for verif_type in VERIF_CASE_STEP_type_list:
-        print(f"----> Making job scripts for {VERIF_CASE_STEP} {verif_type} "
-              +f"for job group {JOB_GROUP}")
+        print("----> Making job scripts for "+VERIF_CASE_STEP+" "
+              +verif_type+" for job group "+JOB_GROUP)
         VERIF_CASE_STEP_abbrev_type = (VERIF_CASE_STEP_abbrev+'_'
                                        +verif_type)
         # Read in environment variables for verif_type
