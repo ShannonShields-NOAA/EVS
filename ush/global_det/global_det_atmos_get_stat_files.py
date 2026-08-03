@@ -63,7 +63,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                                        +VERIF_CASE_STEP_type)
         # Read in VERIF_CASE_STEP_type related environment variables
         # Set valid hours
-        if VERIF_CASE_STEP_type == 'nwp':
+        if VERIF_CASE_STEP_type == 'nwp_index':
             VERIF_CASE_STEP_type_valid_hr_list = os.environ[
                 VERIF_CASE_STEP_abbrev_type+'_valid_hr_list'
             ].split(' ')

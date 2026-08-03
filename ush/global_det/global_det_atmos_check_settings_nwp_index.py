@@ -56,7 +56,7 @@ VERIF_CASE_STEP_type_list = (
     os.environ[VERIF_CASE_STEP_abbrev+'_type_list'].split(' ')
 )
 valid_VERIF_CASE_STEP_type_opts_dict = {
-    'RUN_GRID2GRID_NWP_INDEX': ['nwp'],
+    'RUN_GRID2GRID_NWP_INDEX': ['nwp_index'],
     'RUN_GRID2GRID_PLOTS': ['nwp_index']
 }
 
@@ -97,7 +97,7 @@ evs_global_det_atmos_settings_dict['RUN_GRID2GRID_PLOTS'] = [
 
 verif_case_step_settings_dict = {
     'RUN_GRID2GRID_NWP_INDEX': {
-        'nwp': ['valid_hr_list']
+        'nwp_index': ['valid_hr_list']
     },
     'RUN_GRID2GRID_PLOTS': {
         'nwp_index': ['truth_name_list', 'init_hr_list', 'valid_hr_list']
@@ -165,7 +165,7 @@ if STEP.upper() == 'PLOTS':
                                      +'_model_plot_name_list')
 verif_case_step_check_len_dict = {
     'RUN_GRID2GRID_NWP_INDEX': {
-        'nwp': []
+        'nwp_index': []
     },
     'RUN_GRID2GRID_PLOTS': {
         'nwp_index': ['truth_name_list']

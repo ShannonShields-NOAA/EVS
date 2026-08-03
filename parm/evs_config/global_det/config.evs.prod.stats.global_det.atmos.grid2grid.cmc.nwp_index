@@ -46,18 +46,18 @@ export end_date=$VDATE
 # SETTINGS FOR SPECIFIC USE CASES
 ####################################################
 if [ $RUN_GRID2GRID_NWP_INDEX = YES ]; then
-    #g2gs_type_list: list type of verifications to run for grid-to-grid: nwp
-    #    nwp:        calculate NWP Index
-    #g2gs_nwp_valid_hr_list: list of valid hours to be included in verification: HH
+    #g2gs_type_list: list type of verifications to run for grid-to-grid: nwp_index
+    #    nwp_index:  calculate NWP Index
+    #g2gs_nwp_index_valid_hr_list: list of valid hours to be included in verification: HH
     #For defining forecast hours:
-    #    g2gs_nwp_fhr_min: forecast hour to start verification: HH[H]
-    #    g2gs_nwp_fhr_max: forecast hour to end verification: HH[H]
-    #    g2gs_nwp_fhr_inc: frequency to verify forecast hours: HH[H]
-    export g2gs_type_list="nwp"
-    export g2gs_nwp_valid_hr_list="00 12"
-    export g2gs_nwp_fhr_min=24
-    export g2gs_nwp_fhr_max=120
-    export g2gs_nwp_fhr_inc=24
+    #    g2gs_nwp_index_fhr_min: forecast hour to start verification: HH[H]
+    #    g2gs_nwp_index_fhr_max: forecast hour to end verification: HH[H]
+    #    g2gs_nwp_index_fhr_inc: frequency to verify forecast hours: HH[H]
+    export g2gs_type_list="nwp_index"
+    export g2gs_nwp_index_valid_hr_list="00 12"
+    export g2gs_nwp_index_fhr_min=24
+    export g2gs_nwp_index_fhr_max=120
+    export g2gs_nwp_index_fhr_inc=24
 fi
 
 echo "END: $(basename ${BASH_SOURCE[0]})"
