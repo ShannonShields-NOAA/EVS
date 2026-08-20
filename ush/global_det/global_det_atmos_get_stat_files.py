@@ -40,6 +40,7 @@ VERIF_CASE_STEP = VERIF_CASE+'_'+STEP
 if STEP == 'stats':
     ref_model = os.environ['REFERENCENAME']
     COMINpara = COMIN.replace(USER, 'emc.vpppg')
+    COMINv17 = COMIN.replace(USER, 'qi.shi')
 
 # Set archive paths
 if evs_run_mode != 'production':
@@ -102,26 +103,48 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
             while date_dt <= end_date_dt:
                 if date_type == 'VALID':
                     if evs_run_mode == 'production':
-                        model_evs_data_dir = os.path.join(
-                            COMINpara,
-                            STEP, COMPONENT, 
-                            model+'.'+date_dt.strftime('%Y%m%d')
-                        )
-                        model_ref_evs_data_dir = os.path.join(
-                            COMIN,
-                            STEP, COMPONENT,
-                            model+'.'+date_dt.strftime('%Y%m%d')
-                        )
-                        source_model_date_stat_file = os.path.join(
-                            model_evs_data_dir,
-                            'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
-                            +'v'+date_dt.strftime('%Y%m%d')+'.stat'
-                        )
-                        source_model_ref_date_stat_file = os.path.join(
-                            model_ref_evs_data_dir,
-                            'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
-                            +'persistence.v'+date_dt.strftime('%Y%m%d')+'.stat'
-                        )
+                        if model == 'gfsv17':
+                            model_evs_data_dir = os.path.join(
+                                COMINv17,
+                                STEP, COMPONENT,
+                                'gfs.'+date_dt.strftime('%Y%m%d')
+                            )
+                            model_ref_evs_data_dir = os.path.join(
+                                COMIN,
+                                STEP, COMPONENT,
+                                'gfs.'+date_dt.strftime('%Y%m%d')
+                            )
+                            source_model_date_stat_file = os.path.join(
+                                model_evs_data_dir,
+                                'evs.stats.gfs.'+RUN+'.'+VERIF_CASE+'.'
+                                +'v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                            source_model_ref_date_stat_file = os.path.join(
+                                model_ref_evs_data_dir,
+                                'evs.stats.gfs.'+RUN+'.'+VERIF_CASE+'.'
+                                +'persistence.v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                        else:
+                            model_evs_data_dir = os.path.join(
+                                COMINpara,
+                                STEP, COMPONENT, 
+                                model+'.'+date_dt.strftime('%Y%m%d')
+                            )
+                            model_ref_evs_data_dir = os.path.join(
+                                COMIN,
+                                STEP, COMPONENT,
+                                model+'.'+date_dt.strftime('%Y%m%d')
+                            )
+                            source_model_date_stat_file = os.path.join(
+                                model_evs_data_dir,
+                                'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                                +'v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                            source_model_ref_date_stat_file = os.path.join(
+                                model_ref_evs_data_dir,
+                                'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                                +'persistence.v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
                     else:
                         source_model_date_stat_file = os.path.join(
                             model_evs_data_dir, 'evs_data',
@@ -144,6 +167,22 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                               +dest_model_date_stat_file)
                         os.symlink(source_model_date_stat_file,
                                    dest_model_date_stat_file)
+                        if model == 'gfsv17':
+                            org_file = dest_model_date_stat_file
+                            rev_file = os.path.join(
+                                VERIF_CASE_STEP_data_dir, model,
+                                'revised_'+model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                            # Change gfs to gfsv17 in stat file
+                            with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
+                                for line in f_in:
+                                    modified_line = line.replace("gfs", model)
+                                    f_out.write(modified_line)
+                            print("Done! "+rev_file+" has been created.")
+                            os.remove(org_file)
+                            print("Removed "+org_file)
+                            os.rename(rev_file, dest_model_date_stat_file)
+                            print("Renamed "+rev_file+" to "+dest_model_date_stat_file)
                 if not os.path.exists(dest_model_ref_date_stat_file):
                     if gda_nwputil.check_stat_file_exists_size(
                             source_model_ref_date_stat_file
@@ -160,7 +199,10 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         # This replicates sed command
                         with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
                             for line in f_in:
-                                modified_line = line.replace(model, ref_model)
+                                if model == 'gfsv17':
+                                    modified_line = line.replace("gfs", ref_model)
+                                else:
+                                    modified_line = line.replace(model, ref_model)
                                 if model == 'cfs':
                                     modified_line = modified_line.replace("gfs", "gfs_pers")
                                 f_out.write(modified_line)
