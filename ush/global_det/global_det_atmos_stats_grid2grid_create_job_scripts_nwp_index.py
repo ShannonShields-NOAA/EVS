@@ -126,7 +126,7 @@ if JOB_GROUP == 'calc_nwp_index':
             )
             ref_stat_file = os.path.join(
                 VERIF_CASE_STEP_data_dir, model,
-                ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
+                'revised_'+ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
             )
             if gda_util.check_file_exists_size(model_stat_file) \
                     and gda_util.check_file_exists_size(ref_stat_file):
