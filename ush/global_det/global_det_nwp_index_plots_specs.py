@@ -156,7 +156,7 @@ class PlotSpecs:
             self.legend_font_size = 16
             self.fig_title_size = 18
         else:
-            self.logger.error(f"{self.plot_type} not recongized")
+            self.logger.error(f"{self.plot_type} not recognized")
             sys.exit(1)
 
     def set_up_plot(self):
@@ -1204,6 +1204,9 @@ class PlotSpecs:
             'gfs': {'color': '#000000',
                     'marker': 'o', 'markersize': 6,
                     'linestyle': 'solid', 'linewidth': 3},
+            'gfsv17': {'color': '#696969',
+                       'marker': 's', 'markersize': 6,
+                       'linestyle': 'solid', 'linewidth': 1.5},
             'gfs00Z': {'color': '#000000',
                        'marker': 'o', 'markersize': 6,
                        'linestyle': 'solid', 'linewidth': 3},
