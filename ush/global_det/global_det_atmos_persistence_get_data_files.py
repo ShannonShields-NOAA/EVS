@@ -223,7 +223,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                         VERIF_CASE_STEP_model_dir,
                         model+'.'+'{init?fmt=%Y%m%d%H}.f{lead?fmt=%3H}'
                     )
-                if model in ['cfs', 'fnmoc', 'gfs']:
+                if model in ['cfs', 'fnmoc', 'gfs', 'aigfs']:
                     gdp_util.create_grib2_persistence_files(
                         time['valid_time'], time['init_time'],
                         time['forecast_hour'], model_file_format,
