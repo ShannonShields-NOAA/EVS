@@ -203,7 +203,7 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                                     modified_line = line.replace("gfs", ref_model)
                                 else:
                                     modified_line = line.replace(model, ref_model)
-                                if model == 'cfs':
+                                if model in ['cfs', 'aigfs']:
                                     modified_line = modified_line.replace("gfs", "gfs_pers")
                                 f_out.write(modified_line)
                         print("Done! "+rev_file+" has been created.")

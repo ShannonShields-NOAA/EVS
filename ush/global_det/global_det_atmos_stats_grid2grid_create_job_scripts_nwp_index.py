@@ -87,7 +87,7 @@ if JOB_GROUP == 'calc_nwp_index':
             model = model_list[model_idx]
             job_env_dict['MODEL_ANL'] = model+'_anl'
             job_env_dict['REFERENCE_ANL'] = ref_model+'_anl'
-            if model == 'cfs':
+            if model in ['cfs', 'aigfs']:
                 job_env_dict['MODEL_ANL'] = 'gfs_anl'
                 job_env_dict['REFERENCE_ANL'] = 'gfs_pers_anl'
             job_env_dict['MODEL'] = model_list[model_idx]
