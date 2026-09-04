@@ -196,15 +196,17 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
                             VERIF_CASE_STEP_data_dir, model,
                             'revised_'+ref_model+'_v'+date_dt.strftime('%Y%m%d')+'.stat'
                         )
-                        # This replicates sed command
+                        # This replicates sed command to modify stat lines
                         with open(org_file, 'r') as f_in, open(rev_file, 'w') as f_out:
                             for line in f_in:
                                 if model == 'gfsv17':
                                     modified_line = line.replace("gfs", ref_model)
+                                elif model == 'cfs':
+                                    modified_line = line.replace(model, ref_model).replace("gfs", "gfs_pers")
+                                elif model == 'aigfs':
+                                    modified_line = line.replace("gfs", "gfs_pers")
                                 else:
                                     modified_line = line.replace(model, ref_model)
-                                if model in ['cfs', 'aigfs']:
-                                    modified_line = modified_line.replace("gfs", "gfs_pers")
                                 f_out.write(modified_line)
                         print("Done! "+rev_file+" has been created.")
                 date_dt = date_dt + datetime.timedelta(days=1)
