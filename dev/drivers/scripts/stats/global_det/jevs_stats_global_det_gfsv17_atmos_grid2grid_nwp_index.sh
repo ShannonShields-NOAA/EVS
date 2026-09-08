@@ -12,7 +12,7 @@ set -x
 cd $PBS_O_WORKDIR
 
 export model=evs
-export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/feature_global_det_NWP_Index/EVS
+export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 
 export SENDCOM=YES
 export KEEPDATA=NO
@@ -31,7 +31,6 @@ export evs_ver_2d=$(echo $evs_ver | cut -d'.' -f1-2)
 export machine=WCOSS2
 export USE_CFP=NO
 export nproc=1
-
 
 export envir=prod
 export NET=evs

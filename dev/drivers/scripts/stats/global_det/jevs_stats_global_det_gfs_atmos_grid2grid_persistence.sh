@@ -12,10 +12,10 @@ set -x
 cd $PBS_O_WORKDIR
 
 export model=evs
-export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/feature_global_det_NWP_Index/EVS
+export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 
 export SENDCOM=YES
-export SENDMAIL=NO
+export SENDMAIL=YES
 export KEEPDATA=NO
 export job=${PBS_JOBNAME:-jevs_stats_global_det_gfs_atmos_grid2grid_persistence}
 export jobid=$job.${PBS_JOBID:-$$}
@@ -33,8 +33,6 @@ export machine=WCOSS2
 export USE_CFP=YES
 export nproc=10
 
-export MAILTO='shannon.shields@noaa.gov'
-
 export envir=prod
 export NET=evs
 export STEP=stats
@@ -45,10 +43,12 @@ export MODELNAME=gfs
 
 export DATAROOT=/lfs/h2/emc/stmp/$USER/evs_test/$envir/tmp
 export TMPDIR=$DATAROOT
-export COMIN=/lfs/h2/emc/vpppg/noscrub/emc.vpppg/$NET/$evs_ver_2d
+export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/$COMPONENT
 
 export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.persistence.${MODELNAME}
+
+source $HOMEevs/dev/drivers/set_MAILTO.sh
 
 # CALL executable job script here
 $HOMEevs/jobs/JEVS_STATS_GLOBAL_DET_PERSISTENCE

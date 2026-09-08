@@ -15,7 +15,6 @@ export model=evs
 export HOMEevs=/lfs/h2/emc/vpppg/noscrub/$USER/EVS
 
 export SENDCOM=YES
-export SENDMAIL=YES
 export KEEPDATA=NO
 export job=${PBS_JOBNAME:-jevs_stats_global_det_aigfs_atmos_grid2grid_nwp_index}
 export jobid=$job.${PBS_JOBID:-$$}
@@ -48,8 +47,6 @@ export COMIN=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d
 export COMOUT=/lfs/h2/emc/vpppg/noscrub/$USER/$NET/$evs_ver_2d/$STEP/${COMPONENT}_nwp_index
 
 export config=$HOMEevs/parm/evs_config/global_det/config.evs.prod.${STEP}.${COMPONENT}.${RUN}.${VERIF_CASE}.${MODELNAME}.nwp_index
-
-source $HOMEevs/dev/drivers/set_MAILTO.sh
 
 # CALL executable job script here
 $HOMEevs/jobs/JEVS_STATS_GLOBAL_DET_NWP_INDEX
