@@ -32,15 +32,6 @@ export err=$?; err_chk
 python $USHevs/global_det/global_det_atmos_get_stat_files.py
 export err=$?; err_chk
 
-# Send for missing files
-if [ $SENDMAIL = YES ] ; then
-    if ls $DATA/grid2grid_stats/data/mail_* 1> /dev/null 2>&1; then
-        for FILE in $DATA/grid2grid_stats/data/mail_*; do
-            $FILE
-        done
-    fi
-fi
-
 # Create and run job scripts for calculating NWP Index
 for group in calc_nwp_index; do
     export JOB_GROUP=$group
