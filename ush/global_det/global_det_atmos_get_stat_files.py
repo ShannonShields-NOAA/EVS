@@ -103,7 +103,29 @@ if VERIF_CASE_STEP == 'grid2grid_stats':
             while date_dt <= end_date_dt:
                 if date_type == 'VALID':
                     if evs_run_mode == 'production':
-                        if model == 'gfsv17':
+                        if model == 'aifs':
+                            COMINaifs = os.environ['COMINaifs']
+                            model_evs_data_dir = os.path.join(
+                                COMINaifs,
+                                STEP, COMPONENT,
+                                model+'.'+date_dt.strftime('%Y%m%d')
+                            )
+                            model_ref_evs_data_dir = os.path.join(
+                                COMIN,
+                                STEP, COMPONENT,
+                                model+'.'+date_dt.strftime('%Y%m%d')
+                            )
+                            source_model_date_stat_file = os.path.join(
+                                model_evs_data_dir,
+                                'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                                +'v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                            source_model_ref_date_stat_file = os.path.join(
+                                model_ref_evs_data_dir,
+                                'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
+                                +'persistence.v'+date_dt.strftime('%Y%m%d')+'.stat'
+                            )
+                        elif model == 'gfsv17':
                             model_evs_data_dir = os.path.join(
                                 COMINv17,
                                 STEP, COMPONENT,
