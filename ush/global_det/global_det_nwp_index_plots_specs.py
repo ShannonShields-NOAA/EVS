@@ -68,7 +68,7 @@ class PlotSpecs:
             self.ytick_label_size = 15
             self.legend_frame_on = False
             self.legend_bbox = (0.5, 0.05)
-            self.legend_ncol = 4
+            self.legend_ncol = 5
             if self.plot_type in ['time_series_multifhr',
                                   'long_term_time_series',
                                   'long_term_time_series_multifhr']:
