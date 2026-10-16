@@ -1,0 +1,54 @@
+#!/bin/bash
+###############################################################################
+# Name of Script: exevs_stats_global_det_atmos_grid2obs_sensible_weather_index.sh
+# Developers: Shannon Shields / Shannon.Shields@noaa.gov
+# Purpose of Script: This script is run for the global_det atmos stats step
+#                    for the grid-to-obs Sensible Weather Index. It uses METplus to
+#                    generate the index value.
+###############################################################################
+
+set -x
+
+export VERIF_CASE_STEP_abbrev="g2os"
+
+echo "RUN MODE:$evs_run_mode"
+
+# Source config
+source $config
+export err=$?; err_chk
+
+# Make directory
+mkdir -p ${VERIF_CASE}_${STEP}
+
+# Check user's config settings
+python $USHevs/global_det/global_det_atmos_check_settings_sensible_weather_index.py
+export err=$?; err_chk
+
+# Create output directories
+python $USHevs/global_det/global_det_atmos_create_output_dirs_sensible_weather_index.py
+export err=$?; err_chk
+
+# Link needed stat files and set up model information
+python $USHevs/global_det/global_det_atmos_get_stat_files.py
+export err=$?; err_chk
+
+# Create and run job scripts for calculating Sensible Weather Index
+for group in calc_sensible_weather_index; do
+    export JOB_GROUP=$group
+    echo "Creating and running jobs for grid-to-obs stats: ${JOB_GROUP}"
+    python $USHevs/global_det/global_det_atmos_stats_grid2obs_create_job_scripts_sensible_weather_index.py
+    export err=$?; err_chk
+    chmod u+x ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
+    . ${VERIF_CASE}_${STEP}/METplus_job_scripts/$group/*
+    export err=$?; err_chk
+done
+
+# Copy stat files to desired location
+if [ $SENDCOM = YES ]; then
+    sensible_weather_index_stat_files=$DATA/${VERIF_CASE}_${STEP}/METplus_output/$MODEL.$VDATE/*
+    for stat_file in $sensible_weather_index_stat_files; do
+        if [ -s "$stat_file" ]; then
+            cp -v "$stat_file" $COMOUT/$MODEL.$VDATE/.
+        fi
+    done
+fi
