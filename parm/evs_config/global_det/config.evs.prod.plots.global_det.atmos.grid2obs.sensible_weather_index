@@ -1,0 +1,65 @@
+#!/bin/bash
+##---------------------------------------------------------------------------
+##---------------------------------------------------------------------------
+## NCEP EMC Verification System (EVS) - Global Atmospheric
+##
+## CONTRIBUTORS: Shannon Shields, shannon.shields@noaa.gov, NOAA/NWS/NCEP/EMC-VPPPGB
+## PURPOSE: Set up configurations to plot EVS Global Atmospheric Sensible Weather Index
+##---------------------------------------------------------------------------
+##--------------------------------------------------------------------------
+
+set -x
+
+echo "BEGIN: $(basename ${BASH_SOURCE[0]})"
+
+####################################################
+# WHAT METPLUS USE CASES TO RUN FOR Global ATMOSPHERIC
+####################################################
+## SET TO "YES" or "NO"
+## EDIT SECTIONS BELOW FOR VERIFICATION TYPES REQUESTED
+export RUN_GRID2GRID_STATS="NO"
+export RUN_GRID2GRID_PLOTS="NO"
+export RUN_GRID2OBS_STATS="NO"
+export RUN_GRID2OBS_PLOTS="YES"
+
+####################################################
+# GENERAL SETTINGS APPLIED TO ALL USE CASES
+####################################################
+## INPUT DATA SETTINGS
+#model_list:                 model names
+#model_evs_data_dir_list:    base path to "evs_data" directory
+#model_file_format_list:     file format of model files
+export model_list="gfs gfsv17"
+export model_evs_data_dir_list="$COMIN/stats/${COMPONENT}_sensible_weather_index/gfs $COMIN/stats/${COMPONENT}_sensible_weather_index/gfsv17"
+export model_file_format_list="$COMROOT/gfs/${gfs_ver}/gfs.{init?fmt=%Y%m%d}/{init?fmt=%2H}/atmos/gfs.t{init?fmt=%2H}z.pgrb2.0p25.f{lead?fmt=%3H} $COMROOT/gfs/${gfs_ver}/gfs.{init?fmt=%Y%m%d}/{init?fmt=%2H}/atmos/gfs.t{init?fmt=%2H}z.pgrb2.0p25.f{lead?fmt=%3H}"
+## OUTPUT DATA SETTINGS
+#OUTPUTROOT: base output directory
+export OUTPUTROOT="$DATAROOT"
+## DATE SETTINGS
+#start_date:       verification start date, format YYYYMMDD
+#end_date:         verification end date, format YYYYMMDD
+export start_date=$VDATE_START
+export end_date=$VDATE_END
+####################################################
+# SETTINGS FOR SPECIFIC USE CASES
+####################################################
+
+if [ $RUN_GRID2OBS_PLOTS = YES ]; then
+    #g2op_model_plot_name_list: list of models reference name on plots
+    #g2op_type_list: list type of verifications to run for grid-to-obs: sensible_weather_index
+    #g2op_event_equalization: do event equalization (YES) or not (NO)
+    #g2op_nwp_index_truth_name_list: list of reference name for truth files
+    #g2op_*_init_hr_list: list of cycles/initialization hours to be included in verification: HH
+    #g2op_*_valid_hr_list: list of valid hours to be included in verification: HH
+    #For defining forecast hours:
+    #g2op*_fhr_list: list of forecast hours: HH[H]
+    export g2op_model_plot_name_list="gfs gfsv17"
+    export g2op_type_list="sensible_weather_index"
+    export g2op_event_equalization="NO"
+    export g2op_sensible_weather_index_truth_name_list="ADPSFC ADPSFC"
+    export g2op_sensible_weather_index_init_hr_list="00 12"
+    export g2op_sensible_weather_index_valid_hr_list="00 12"
+    export g2op_sensible_weather_index_fhr_list=72
+fi
+
+echo "END: $(basename ${BASH_SOURCE[0]})"
