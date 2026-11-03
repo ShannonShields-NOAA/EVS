@@ -384,7 +384,7 @@ elif VERIF_CASE_STEP == 'grid2obs_stats':
                 date_dt = date_dt + datetime.timedelta(days=1)
 elif STEP == 'plots':
     # Read in VERIF_CASE_STEP related environment variables
-    # Get nwp index stat files
+    # Get sensible weather index stat files
     start_date_dt = datetime.datetime.strptime(start_date, '%Y%m%d')
     end_date_dt = datetime.datetime.strptime(end_date, '%Y%m%d')
     VERIF_CASE_STEP_data_dir = os.path.join(DATA, VERIF_CASE_STEP, 'data')
@@ -406,7 +406,7 @@ elif STEP == 'plots':
                             source_model_date_stat_file = os.path.join(
                                 model_evs_data_dir+'.'+date_dt.strftime('%Y%m%d'),
                                 'evs.stats.'+model+'.'+RUN+'.'+VERIF_CASE+'.'
-                                +'nwpindex.v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
+                                +'sensibleweatherindex.v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
                             )
                         else:
                             source_model_date_stat_file = os.path.join(
@@ -416,10 +416,10 @@ elif STEP == 'plots':
                             )
                         dest_model_date_stat_file = os.path.join(
                             VERIF_CASE_STEP_data_dir, model,
-                            model+'_nwpindex_v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
+                            model+'_sensibleweatherindex_v'+date_dt.strftime('%Y%m%d')+VERIF_CASE_STEP_type_valid_hr+'.stat'
                         )
                     if not os.path.exists(dest_model_date_stat_file):
-                        if gda_nwputil.check_nwp_index_file_exists_size(
+                        if gda_swiutil.check_sensible_weather_index_file_exists_size(
                                 source_model_date_stat_file
                         ):
                             print("Linking "+source_model_date_stat_file+" to "

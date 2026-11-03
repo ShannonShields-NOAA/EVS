@@ -3159,7 +3159,7 @@ def condense_model_stat_files(logger, input_dir, output_dir, model, obs,
              fcst_var_name  - forecast variable name (string)
              fcst_var_level - forecast variable level (string)
              obs_var_name   - observation variable name (string)
-             obs_var_leve   - observation variable level (string)
+             obs_var_level  - observation variable level (string)
              line_type      - MET line type (string)
 
          Returns:
@@ -3180,31 +3180,51 @@ def condense_model_stat_files(logger, input_dir, output_dir, model, obs,
         if not os.path.exists(output_file):
             logger.info(f"Condensing down stat files matching "
                         +f"{model_stat_files_wildcard}")
+            # Grab the MET header from the first file
             with open(model_stat_files[0]) as msf:
                 met_header_cols = msf.readline()
-            additional_grep_list = [obs, vx_mask, fcst_var_name,
+            # Build the grep command cleanly using a list comprehension
+            additional_grep_list = [obs, model, vx_mask,
                                     fcst_var_level, obs_var_name,
                                     line_type]
-            additional_grep = ''
-            for item in additional_grep_list:
-                additional_grep = (additional_grep
-                                   +f' | grep "{item} "')
-            all_grep_output = ''
-            for model_stat_file in model_stat_files:
-                logger.info(f"Grep'ing {model_stat_file} for "
-                            +f"{model}")
-                grep = subprocess.run(
-                    'grep -R "'+model+' " '+model_stat_file,
-                    shell=True, capture_output=True, encoding="utf8"
-                )
-                logger.debug(f"Ran {grep.args}")
-                all_grep_output = all_grep_output+grep.stdout
-            logger.info(f"Condensed {model} stat files at "
-                        +f"{output_file}")
-            with open(output_file, 'w') as f:
-                f.write(met_header_cols+all_grep_output)
+            #additional_grep = ''
+            #for item in additional_grep_list:
+                #additional_grep = (additional_grep
+                                   #+f' | grep "{item} "')
+            #all_grep_output = ''
+            grep_chain = " | ".join([f'grep -F "{item} "' for item in additional_grep_list])
+            # Assemble the master command
+            # Using -h prevents grep from printing the filename at the start of each line
+            master_command = f'grep -hF "{fcst_var_name} " {model_stat_files_wildcard} | {grep_chain}'
+            logger.info(f"Running grep command: {master_command}")
+            # Execute one subprocess for all files
+            grep = subprocess.run(
+                master_command,
+                shell=True,
+                capture_output=True,
+                encoding="utf8"
+            )
+            #for model_stat_file in model_stat_files:
+                #logger.info(f"Grep'ing {model_stat_file} for "
+                            #+f"{model}")
+                #grep = subprocess.run(
+                    #'grep -R "'+model+' " '+model_stat_file,
+                    #shell=True, capture_output=True, encoding="utf8"
+                #)
+                #logger.debug(f"Ran {grep.args}")
+                #all_grep_output = all_grep_output+grep.stdout
+            logger.info(f"Condensed {model} stat files for {obs}, "
+                        +f"{vx_mask}, "
+                        +f"{obs_var_name}, "
+                        +f"{fcst_var_name}, and {line_type} and "
+                        +f"saved to {output_file}")
+            #with open(output_file, 'w') as f:
+                #f.write(met_header_cols+all_grep_output)
+            # Write the header and the grep output to the new file
+            with open(output_file, 'w') as cf:
+                cf.write(met_header_cols + grep.stdout)
         else:
-            logger.info(f"{output_file} exists")
+            logger.info(f"{output_file} already exists")
 
 def build_df(job_group, logger, input_dir, output_dir, model_info_dict,
              met_info_dict, fcst_var_name, fcst_var_level, fcst_var_thresh,
