@@ -3184,9 +3184,7 @@ def condense_model_stat_files(logger, input_dir, output_dir, model, obs,
             with open(model_stat_files[0]) as msf:
                 met_header_cols = msf.readline()
             # Build the grep command cleanly using a list comprehension
-            additional_grep_list = [obs, model, vx_mask,
-                                    fcst_var_level, obs_var_name,
-                                    line_type]
+            additional_grep_list = [model, line_type]
             #additional_grep = ''
             #for item in additional_grep_list:
                 #additional_grep = (additional_grep
@@ -3213,10 +3211,8 @@ def condense_model_stat_files(logger, input_dir, output_dir, model, obs,
                 #)
                 #logger.debug(f"Ran {grep.args}")
                 #all_grep_output = all_grep_output+grep.stdout
-            logger.info(f"Condensed {model} stat files for {obs}, "
-                        +f"{vx_mask}, "
-                        +f"{obs_var_name}, "
-                        +f"{fcst_var_name}, and {line_type} and "
+            logger.info(f"Condensed {model} stat files for {fcst_var_name} and "
+                        +f"{line_type}, and "
                         +f"saved to {output_file}")
             #with open(output_file, 'w') as f:
                 #f.write(met_header_cols+all_grep_output)
