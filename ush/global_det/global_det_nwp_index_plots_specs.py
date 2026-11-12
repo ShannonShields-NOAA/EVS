@@ -14,7 +14,7 @@ import global_det_atmos_util as gda_util
 
 class PlotSpecs:
     def __init__(self, logger, plot_type):
-        """! Initalize PlotSpecs class
+        """! Initialize PlotSpecs class
 
              Args:
                  logger    - logger object
@@ -1204,7 +1204,7 @@ class PlotSpecs:
             'gfs': {'color': '#000000',
                     'marker': 'o', 'markersize': 6,
                     'linestyle': 'solid', 'linewidth': 3},
-            'gfsv17': {'color': '#696969',
+            'gfsv17': {'color': '#d269c1',
                        'marker': 's', 'markersize': 6,
                        'linestyle': 'solid', 'linewidth': 1.5},
             'gfs00Z': {'color': '#000000',
@@ -1219,7 +1219,7 @@ class PlotSpecs:
             'gfs18Z': {'color': '#e69f00',
                        'marker': 'o', 'markersize': 7,
                        'linestyle': 'solid', 'linewidth': 1.5},
-            'aifs': {'color': '#d269c1',
+            'aifs': {'color': '#696969',
                      'marker': 's', 'markersize': 6,
                      'linestyle': 'solid', 'linewidth': 1.5},
             'aigfs': {'color': '#8400c8',
