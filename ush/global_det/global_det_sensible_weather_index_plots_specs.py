@@ -1206,7 +1206,7 @@ class PlotSpecs:
             'gfs': {'color': '#000000',
                     'marker': 'o', 'markersize': 6,
                     'linestyle': 'solid', 'linewidth': 3},
-            'gfsv17': {'color': '#696969',
+            'gfsv17': {'color': '#d269c1',
                        'marker': 's', 'markersize': 6,
                        'linestyle': 'solid', 'linewidth': 1.5},
             'gfs00Z': {'color': '#000000',

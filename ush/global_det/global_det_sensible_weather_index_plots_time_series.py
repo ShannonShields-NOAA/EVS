@@ -436,7 +436,7 @@ class TimeSeries:
             else:
                 self.logger.debug(f"{model_num} [{model_num_name},"
                                   +f"{model_num_plot_name}] has no points")
-        preset_y_axis_tick_min = ax.get_yticks()[0]
+        preset_y_axis_tick_min = 1.0
         preset_y_axis_tick_max = ax.get_yticks()[-1]
         preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
         if self.plot_info_dict['stat'] in ['ACC']:
@@ -477,7 +477,7 @@ class TimeSeries:
             np.arange(y_axis_min, y_axis_max+y_axis_tick_inc, y_axis_tick_inc)
         )
         ax.set_ylim([y_axis_min, y_axis_max])
-        # Highlight the center line
+        # Highlight the 1.0 line
         ax.axhline(y=1.0, color='black', linewidth=2)
         if len(ax.lines) != 0:
             legend = ax.legend(
