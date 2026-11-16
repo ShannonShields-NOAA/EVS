@@ -31,7 +31,7 @@ export RUN_GRID2OBS_PLOTS="NO"
 #model_file_format_list: file format of model files
 export model_list="$MODELNAME"
 export model_evs_data_dir_list="$COMOUTfinal"
-export model_file_format_list="/lfs/h2/emc/gfstemp/emc.global/EVS_archive/retrov17_01/${MODELNAME}.{init?fmt=%Y%m%d}/{init?fmt=%2H}/products/atmos/grib2/0p25/${MODELNAME}.t{init?fmt=%2H}z.pres_a.0p25.f000.grib2"
+export model_file_format_list="/lfs/h2/emc/gfstemp/emc.global/ecflow/comroot/ops/para/com/gfs/v17.0/${MODELNAME}.{init?fmt=%Y%m%d}/{init?fmt=%2H}/products/atmos/grib2/0p25/${MODELNAME}.t{init?fmt=%2H}z.pres_a.0p25.f000.grib2"
 
 ## OUTPUT DATA SETTINGS
 #OUTPUTROOT: base output directory
