@@ -436,8 +436,8 @@ class TimeSeries:
             else:
                 self.logger.debug(f"{model_num} [{model_num_name},"
                                   +f"{model_num_plot_name}] has no points")
-        preset_y_axis_tick_min = 1.0
-        preset_y_axis_tick_max = ax.get_yticks()[-1]
+        preset_y_axis_tick_min = 1.00
+        preset_y_axis_tick_max = 3.25
         preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
         if self.plot_info_dict['stat'] in ['ACC']:
             y_axis_tick_inc = 0.1
