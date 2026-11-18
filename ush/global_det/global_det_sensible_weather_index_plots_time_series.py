@@ -438,7 +438,7 @@ class TimeSeries:
                                   +f"{model_num_plot_name}] has no points")
         preset_y_axis_tick_min = 1.00
         preset_y_axis_tick_max = 3.25
-        preset_y_axis_tick_inc = ax.get_yticks()[1] - ax.get_yticks()[0]
+        preset_y_axis_tick_inc = 0.25
         if self.plot_info_dict['stat'] in ['ACC']:
             y_axis_tick_inc = 0.1
         elif self.plot_info_dict['stat'] in ['FBIAS'] \
@@ -470,7 +470,7 @@ class TimeSeries:
                     in ['SNOD_A24', 'WEASD_A24']:
                 y_axis_max = 10
             else:
-                y_axis_max = preset_y_axis_tick_max + y_axis_tick_inc
+                y_axis_max = preset_y_axis_tick_max
                 while y_axis_max < stat_max:
                     y_axis_max = y_axis_max + y_axis_tick_inc
         ax.set_yticks(
